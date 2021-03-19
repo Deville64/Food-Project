@@ -1,43 +1,42 @@
 <template>
   <TheHeader />
-    <main id="home" class="wrapper">
-      <Banner/>
+  <main id="home" class="wrapper">
+    <Banner />
 
-      <h1>Un projet 100% indépendant</h1>
+    <h1>Un projet 100% indépendant</h1>
 
-      <ul>
-        <li>
-          <img src="/img/home/noInfluence.png" alt="" />
-          <p>
-            Aucune marque ni groupe industriel ne peut influencer la notation et
-            les recommandations proposées.
-          </p>
-        </li>
-        <li>
-          <img src="/img/home/noAdd.png" alt="" />
-          <p>
-            Aucune marque ne peut nous rémunérer pour faire la promotion de ses
-            produits dans l'application.
-          </p>
-        </li>
-      </ul>
-      <slot name="James"/>
-    </main>
+    <ul>
+      <li>
+        <img src="/img/home/noInfluence.png" alt="" />
+        <p>
+          Aucune marque ni groupe industriel ne peut influencer la notation et
+          les recommandations proposées.
+        </p>
+      </li>
+      <li>
+        <img src="/img/home/noAdd.png" alt="" />
+        <p>
+          Aucune marque ne peut nous rémunérer pour faire la promotion de ses
+          produits dans l'application.
+        </p>
+      </li>
+    </ul>
+  </main>
   <TheFooter />
 </template>
 
 <script>
-  import TheHeader from "@/Components/TheHeader";
-  import TheFooter from "@/Components/TheFooter";
-	import Banner from "@/components/Banner";
+import TheHeader from "@/Components/TheHeader";
+import TheFooter from "@/Components/TheFooter";
+import Banner from "@/components/Banner";
 
-  export default {
-    components: {
-      TheHeader,
-      TheFooter,
-			Banner
-    },
-  };
+export default {
+  components: {
+    TheHeader,
+    TheFooter,
+    Banner,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

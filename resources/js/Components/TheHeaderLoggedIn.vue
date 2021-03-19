@@ -8,7 +8,7 @@
 
         <ul id="menuLogin">
           <li class="liMenuLogin">
-            <inertia-link href="myrecipes">Mes recettes</inertia-link>
+            <inertia-link href="/recipes">Mes recettes</inertia-link>
           </li>
           <li class="liMenuLogin">
             <label for="showMenuLogin" id="icon"
@@ -17,10 +17,10 @@
             <input type="checkbox" id="showMenuLogin" role="button" />
             <ul id="iconMenuLogin">
               <li>
-                  <inertia-link href="myrecipes">Mes recettes</inertia-link>
+                  <inertia-link href="/recipes">Mes recettes</inertia-link>
               </li>
               <li>
-                <inertia-link href="profile">Profil</inertia-link>
+                <inertia-link href="/profile">Profil</inertia-link>
               </li>
               <li>
                 <inertia-link href="logout" method="post">Deconnexion</inertia-link>

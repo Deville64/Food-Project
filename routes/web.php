@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Http\Controllers\ProfileController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,8 +25,14 @@ Route::get('/food', function () {
     return Inertia::render('Food');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/recipes', function () {
+    return Inertia::render('Recipes');
+})->middleware(['auth', 'verified'])->name('recipes');
 
-require __DIR__.'/auth.php';
+Route::get('/profile', [ProfileController::class, 'create'])
+    ->middleware(['auth', 'verified']);
+
+Route::post('/profile', [ProfileController::class, 'updateUser'])
+    ->middleware(['auth', 'verified']);
+
+require __DIR__ . '/auth.php';
