@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecipesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,7 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
+//Public
 Route::get('/', function () {
     return Inertia::render('Home');
 });
@@ -25,14 +27,15 @@ Route::get('/food', function () {
     return Inertia::render('Food');
 });
 
-Route::get('/recipes', function () {
-    return Inertia::render('Recipes');
-})->middleware(['auth', 'verified'])->name('recipes');
-
+//Logged In
 Route::get('/profile', [ProfileController::class, 'create'])
     ->middleware(['auth', 'verified']);
 
-Route::post('/profile', [ProfileController::class, 'updateUser'])
+Route::post('/profile', [ProfileController::class, 'updateEmail'])
+    ->middleware(['auth', 'verified'])
+    ->name('profile');
+
+Route::get('/recipes', [RecipesController::class, 'create'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

@@ -6,15 +6,15 @@
     <section id="personalInfo" class="hide" style="display: inline-block">
       <h1><span>Information personnelles</span></h1>
 
-      <form action="" method="post">
+      <form @submit.prevent="submit">
         <div>
           <label for="email">E-mail:</label>
           <div>Votre e-mail actuel: {{ $page.props.auth.user.email }}</div>
           <input
             type="email"
-            name="email"
+            v-model="form.email"
             placeholder="Entrez votre nouvel email"
-            value=""
+            required
           />
         </div>
 
@@ -46,11 +46,26 @@
 import TheHeader from "@/Components/TheHeader";
 import ProfileMenu from "@/Components/ProfileMenu";
 import TheFooter from "@/Components/TheFooter";
+
 export default {
   components: {
     TheHeader,
     TheFooter,
-    ProfileMenu,
+    ProfileMenu
+  },
+
+  data() {
+    return {
+      form: {
+        email: "",
+      },
+    };
+  },
+
+  methods: {
+    submit() {
+      this.$inertia.post(this.route("profile", this.form));
+    },
   },
 };
 </script>

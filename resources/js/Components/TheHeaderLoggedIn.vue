@@ -20,7 +20,7 @@
                   <inertia-link href="/recipes">Mes recettes</inertia-link>
               </li>
               <li>
-                <inertia-link href="/profile">Profil</inertia-link>
+                <inertia-link href="/profile" >Profil</inertia-link>
               </li>
               <li>
                 <inertia-link href="logout" method="post">Deconnexion</inertia-link>
