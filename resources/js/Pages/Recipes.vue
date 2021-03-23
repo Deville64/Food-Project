@@ -7,9 +7,8 @@
         <h2></h2>
       </li>
       <li>
-        <a href=""><img id="addMore"
-            src="/img/general/addMore.png"
-            alt=""/></a>
+        <inertia-link href="/recipeform"><img id="addMore" src="/img/general/addMore.png" alt=""
+        /></inertia-link>
       </li>
     </ul>
   </main>

@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipesController;
+use App\Http\Controllers\RecipeFormController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,9 @@ Route::post('/profile', [ProfileController::class, 'updateEmail'])
     ->name('profile');
 
 Route::get('/recipes', [RecipesController::class, 'create'])
+    ->middleware(['auth', 'verified']);
+
+Route::get('/recipeform', [RecipeFormController::class, 'create'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

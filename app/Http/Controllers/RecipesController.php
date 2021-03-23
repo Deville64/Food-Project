@@ -12,7 +12,7 @@ class RecipesController extends Controller
     {
         $user = Auth::user();
         $id = $user->id;
-        $users = DB::select('SELECT * FROM recipes WHERE id = ?', [$id]);
-        return Inertia::render('Recipes', ['users' => $users]);
+        $recipes = DB::select('SELECT * FROM recipes WHERE id = ?', [$id]);
+        return Inertia::render('Recipes', ['recipes' => $recipes]);
     }
 }
