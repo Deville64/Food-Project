@@ -31,7 +31,7 @@
         </li>
       </ul>
 
-      <h2>Ingrédients:</h2>
+      <h2>Ingrédients: {{ ingredients }}</h2>
       <ul id="ingredients">
         <li>
           <img
@@ -68,24 +68,58 @@ export default {
     TheHeader,
     TheFooter,
   },
+  props: {
+    data: Array,
+  },
 
   data() {
     let index = 0;
+    return {
+      ingredients: {},
+    };
   },
-
+  created() {
+    axios
+      .get("http://127.0.0.1:8000/ingredients")
+      .then((response) => (this.ingredients = response.data))
+      .catch((error) => console.log(error));
+  },
   methods: {
+    strstr(haystack, needle, bool) {
+      let pos = 0;
+      haystack += "";
+      pos = haystack.indexOf(needle);
+
+      if (pos === -1) {
+        return false;
+      } else {
+        if (bool) {
+          return haystack.substr(0, pos);
+        } else {
+          return haystack.slice(pos);
+        }
+      }
+    },
+
     //Show hints depending on what is in ingredient input
     showHint(text, id) {
+      let vm = this;
       if (text.length == 0) {
         document.getElementById(id).innerHTML = "";
         return;
       } else {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-          document.getElementById(id).innerHTML = this.responseText;
-        };
-        xmlhttp.open("GET", "./../app/Http/Controllers/RecipeFormController.php?q=" + text, true);
-        xmlhttp.send();
+        for (ingredient in vm.ingredients) {
+          if (vm.strstr(text, ingredient["name"].substr(0, text.length))) {
+            let hint =
+              hint +
+              "<div v-on:click =selectHint(event," +
+              ingredient["id"] +
+              ")>" +
+              ingredient["name"] +
+              "</div>";
+            document.getElementById(id).innerHTML = hint;
+          }
+        }
       }
     },
 

@@ -17073,24 +17073,54 @@ __webpack_require__.r(__webpack_exports__);
     TheHeader: _Components_TheHeader__WEBPACK_IMPORTED_MODULE_0__.default,
     TheFooter: _Components_TheFooter__WEBPACK_IMPORTED_MODULE_1__.default
   },
+  props: {
+    data: Array
+  },
   data: function data() {
     var index = 0;
+    return {
+      ingredients: {}
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("http://127.0.0.1:8000/ingredients").then(function (response) {
+      return _this.ingredients = response.data;
+    })["catch"](function (error) {
+      return console.log(error);
+    });
   },
   methods: {
+    strstr: function strstr(haystack, needle, bool) {
+      var pos = 0;
+      haystack += "";
+      pos = haystack.indexOf(needle);
+
+      if (pos === -1) {
+        return false;
+      } else {
+        if (bool) {
+          return haystack.substr(0, pos);
+        } else {
+          return haystack.slice(pos);
+        }
+      }
+    },
     //Show hints depending on what is in ingredient input
     showHint: function showHint(text, id) {
+      var vm = this;
+
       if (text.length == 0) {
         document.getElementById(id).innerHTML = "";
         return;
       } else {
-        var xmlhttp = new XMLHttpRequest();
-
-        xmlhttp.onreadystatechange = function () {
-          document.getElementById(id).innerHTML = this.responseText;
-        };
-
-        xmlhttp.open("GET", "./../app/Http/Controllers/RecipeFormController.php?q=" + text, true);
-        xmlhttp.send();
+        for (ingredient in vm.ingredients) {
+          if (vm.strstr(text, ingredient["name"].substr(0, text.length))) {
+            var hint = hint + "<div v-on:click =selectHint(event," + ingredient["id"] + ")>" + ingredient["name"] + "</div>";
+            document.getElementById(id).innerHTML = hint;
+          }
+        }
       }
     },
     selectHint: function selectHint(event, id) {
@@ -18670,23 +18700,19 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Ingrédients:", -1
-/* HOISTED */
-);
-
-var _hoisted_7 = {
+var _hoisted_6 = {
   id: "ingredients"
 };
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Ajouter un ingrédient", -1
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Ajouter un ingrédient", -1
 /* HOISTED */
 );
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Préparation:", -1
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Préparation:", -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
   name: "preparation",
   id: "preparation",
   cols: "30",
@@ -18696,7 +18722,7 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
   type: "submit",
   value: "Valider"
 }, null, -1
@@ -18708,14 +18734,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_TheFooter = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TheFooter");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", _hoisted_3, [_hoisted_4, _hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", _hoisted_3, [_hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Ingrédients: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.ingredients), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     src: "/img/general/addMore.png",
     alt: "",
     id: "moreIngredients",
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return $options.createIngredient();
     })
-  }), _hoisted_8])]), _hoisted_9, _hoisted_10, _hoisted_11])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
+  }), _hoisted_7])]), _hoisted_8, _hoisted_9, _hoisted_10])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
   /* STABLE_FRAGMENT */
   );
 }

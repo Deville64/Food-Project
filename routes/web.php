@@ -42,4 +42,7 @@ Route::get('/recipes', [RecipesController::class, 'create'])
 Route::get('/recipeform', [RecipeFormController::class, 'create'])
     ->middleware(['auth', 'verified']);
 
+Route::get('/ingredients', [RecipeFormController::class, 'ingredients'])
+    ->middleware(['auth', 'verified']);
+
 require __DIR__ . '/auth.php';
