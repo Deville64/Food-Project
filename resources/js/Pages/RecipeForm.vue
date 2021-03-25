@@ -31,7 +31,7 @@
         </li>
       </ul>
 
-      <h2>Ingrédients: {{ ingredients }}</h2>
+      <h2>Ingrédients:</h2>
       <ul id="ingredients">
         <li>
           <img
@@ -75,57 +75,34 @@ export default {
   data() {
     let index = 0;
     return {
-      ingredients: {},
+      index,
     };
   },
-  created() {
-    axios
-      .get("http://127.0.0.1:8000/ingredients")
-      .then((response) => (this.ingredients = response.data))
-      .catch((error) => console.log(error));
-  },
+
   methods: {
-    strstr(haystack, needle, bool) {
-      let pos = 0;
-      haystack += "";
-      pos = haystack.indexOf(needle);
-
-      if (pos === -1) {
-        return false;
-      } else {
-        if (bool) {
-          return haystack.substr(0, pos);
-        } else {
-          return haystack.slice(pos);
-        }
-      }
-    },
-
     //Show hints depending on what is in ingredient input
     showHint(text, id) {
       let vm = this;
       if (text.length == 0) {
         document.getElementById(id).innerHTML = "";
-        return;
       } else {
-        for (ingredient in vm.ingredients) {
-          if (vm.strstr(text, ingredient["name"].substr(0, text.length))) {
-            let hint =
-              hint +
-              "<div v-on:click =selectHint(event," +
-              ingredient["id"] +
-              ")>" +
-              ingredient["name"] +
-              "</div>";
-            document.getElementById(id).innerHTML = hint;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
+        xmlhttp.onload = function () {
+          const ingredients = JSON.parse(xmlhttp.responseText);
+
+          for (let ingredient of ingredients) {
+            if (text.toLowerCase().substr(0, text.length) == ingredient["name"].toLowerCase().substr(0, text.length)) {
+              console.log(ingredient["name"]);
+            }
           }
-        }
+        };
+        xmlhttp.send();
       }
     },
 
     selectHint(event, id) {
       let getHint = event.target;
-
       let getInputID = getHint.parentNode.id.replace("dropdown", "");
       let giveInputName = document.getElementById("ingredient" + getInputID);
       let giveInputId = document.getElementById("ingredientId" + getInputID);
