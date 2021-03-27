@@ -17111,6 +17111,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
               if (text.toLowerCase().substr(0, text.length) == ingredient["name"].toLowerCase().substr(0, text.length)) {
                 console.log(ingredient["name"]);
+                var hint = hint + "<div onclick =selectHint(event," + ingredient["id"] + ")>" + ingredient["name"] + "</div>";
+                document.getElementById(id).innerHTML = hint;
               }
             }
           } catch (err) {

@@ -92,8 +92,19 @@ export default {
           const ingredients = JSON.parse(xmlhttp.responseText);
 
           for (let ingredient of ingredients) {
-            if (text.toLowerCase().substr(0, text.length) == ingredient["name"].toLowerCase().substr(0, text.length)) {
+            if (
+              text.toLowerCase().substr(0, text.length) ==
+              ingredient["name"].toLowerCase().substr(0, text.length)
+            ) {
               console.log(ingredient["name"]);
+              let hint =
+                hint +
+                "<div onclick =selectHint(event," +
+                ingredient["id"] +
+                ")>" +
+                ingredient["name"] +
+                "</div>";
+              document.getElementById(id).innerHTML = hint;
             }
           }
         };
