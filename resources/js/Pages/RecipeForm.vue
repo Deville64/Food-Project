@@ -82,44 +82,54 @@ export default {
   methods: {
     //Show hints depending on what is in ingredient input
     showHint(text, id) {
-      let vm = this;
+      const dropdown = document.getElementById(id);
+      //Purge old results
+      while (dropdown.firstChild) {
+        dropdown.removeChild(dropdown.firstChild);
+      }
+
       if (text.length == 0) {
-        document.getElementById(id).innerHTML = "";
+        dropdown.innerHTML = "";
       } else {
-        var xmlhttp = new XMLHttpRequest();
+        let xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
         xmlhttp.onload = function () {
-          const ingredients = JSON.parse(xmlhttp.responseText);
 
+          const ingredients = JSON.parse(xmlhttp.responseText);
           for (let ingredient of ingredients) {
             if (
               text.toLowerCase().substr(0, text.length) ==
               ingredient["name"].toLowerCase().substr(0, text.length)
             ) {
-              console.log(ingredient["name"]);
-              let hint =
-                hint +
-                "<div onclick =selectHint(event," +
-                ingredient["id"] +
-                ")>" +
-                ingredient["name"] +
-                "</div>";
-              document.getElementById(id).innerHTML = hint;
+              console.log(ingredient)
+              dropdown.style.display = "block";
+
+              const li = document.createElement("li");
+              li.innerText = ingredient["name"];
+
+              li.addEventListener("click", function (event) {
+                let getHint = event.target;
+                let getID = getHint.parentNode.id.replace("dropdown", "");
+                let giveInputName = document.getElementById(
+                  "ingredient" + getID
+                );
+                let giveInputId = document.getElementById(
+                  "ingredientId" + getID
+                );
+
+                giveInputName.value = getHint.innerHTML;
+                giveInputId.value = ingredient["id"];
+
+                dropdown.style.display = "none";
+              });
+
+              const ul = document.getElementById(id);
+              ul.appendChild(li);
             }
           }
         };
         xmlhttp.send();
       }
-    },
-
-    selectHint(event, id) {
-      let getHint = event.target;
-      let getInputID = getHint.parentNode.id.replace("dropdown", "");
-      let giveInputName = document.getElementById("ingredient" + getInputID);
-      let giveInputId = document.getElementById("ingredientId" + getInputID);
-
-      giveInputName.value = getHint.innerHTML;
-      giveInputId.value = id;
     },
 
     //Create Ingredient, Quantity Inputs if click on add ingredient
@@ -137,8 +147,8 @@ export default {
       ingredient.className = "ingredient";
       ingredient.autocomplete = "off";
 
-      const div = document.createElement("div");
-      div.id = "dropdown" + this.index;
+      const ul = document.createElement("ul");
+      ul.id = "dropdown" + this.index;
 
       const ingredientId = document.createElement("input");
       ingredientId.id = "ingredientId" + this.index;
@@ -155,13 +165,13 @@ export default {
       getUl.appendChild(li);
       li.appendChild(ingredient);
       li.appendChild(ingredientId);
-      li.appendChild(div);
+      li.appendChild(ul);
       li.appendChild(quantity);
 
       return (document.getElementById(
         "ingredient" + this.index
       ).onkeyup = function () {
-        vm.showHint(this.value, div.id);
+        vm.showHint(this.value, ul.id);
       });
     },
   },

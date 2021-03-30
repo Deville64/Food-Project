@@ -17091,10 +17091,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   methods: {
     //Show hints depending on what is in ingredient input
     showHint: function showHint(text, id) {
-      var vm = this;
+      var dropdown = document.getElementById(id); //Purge old results
+
+      while (dropdown.firstChild) {
+        dropdown.removeChild(dropdown.firstChild);
+      }
 
       if (text.length == 0) {
-        document.getElementById(id).innerHTML = "";
+        dropdown.innerHTML = "";
       } else {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
@@ -17106,14 +17110,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
               _step;
 
           try {
-            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var _loop = function _loop() {
               var ingredient = _step.value;
 
               if (text.toLowerCase().substr(0, text.length) == ingredient["name"].toLowerCase().substr(0, text.length)) {
-                console.log(ingredient["name"]);
-                var hint = hint + "<div onclick =selectHint(event," + ingredient["id"] + ")>" + ingredient["name"] + "</div>";
-                document.getElementById(id).innerHTML = hint;
+                console.log(ingredient);
+                dropdown.style.display = "block";
+                var li = document.createElement("li");
+                li.innerText = ingredient["name"];
+                li.addEventListener("click", function (event) {
+                  var getHint = event.target;
+                  var getID = getHint.parentNode.id.replace("dropdown", "");
+                  var giveInputName = document.getElementById("ingredient" + getID);
+                  var giveInputId = document.getElementById("ingredientId" + getID);
+                  giveInputName.value = getHint.innerHTML;
+                  giveInputId.value = ingredient["id"];
+                  dropdown.style.display = "none";
+                });
+                var ul = document.getElementById(id);
+                ul.appendChild(li);
               }
+            };
+
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              _loop();
             }
           } catch (err) {
             _iterator.e(err);
@@ -17124,14 +17144,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         xmlhttp.send();
       }
-    },
-    selectHint: function selectHint(event, id) {
-      var getHint = event.target;
-      var getInputID = getHint.parentNode.id.replace("dropdown", "");
-      var giveInputName = document.getElementById("ingredient" + getInputID);
-      var giveInputId = document.getElementById("ingredientId" + getInputID);
-      giveInputName.value = getHint.innerHTML;
-      giveInputId.value = id;
     },
     //Create Ingredient, Quantity Inputs if click on add ingredient
     createIngredient: function createIngredient() {
@@ -17145,8 +17157,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       ingredient.id = "ingredient" + this.index;
       ingredient.className = "ingredient";
       ingredient.autocomplete = "off";
-      var div = document.createElement("div");
-      div.id = "dropdown" + this.index;
+      var ul = document.createElement("ul");
+      ul.id = "dropdown" + this.index;
       var ingredientId = document.createElement("input");
       ingredientId.id = "ingredientId" + this.index;
       ingredientId.style.display = "none";
@@ -17160,10 +17172,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       getUl.appendChild(li);
       li.appendChild(ingredient);
       li.appendChild(ingredientId);
-      li.appendChild(div);
+      li.appendChild(ul);
       li.appendChild(quantity);
       return document.getElementById("ingredient" + this.index).onkeyup = function () {
-        vm.showHint(this.value, div.id);
+        vm.showHint(this.value, ul.id);
       };
     }
   }
