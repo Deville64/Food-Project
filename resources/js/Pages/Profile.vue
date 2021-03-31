@@ -64,7 +64,7 @@ export default {
 
   methods: {
     submit() {
-      this.$inertia.post(this.route("profile", this.form));
+      this.$inertia.post(this.route("updateEmail", this.form));
     },
   },
 };

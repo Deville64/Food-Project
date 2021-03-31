@@ -16434,6 +16434,129 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/ChooseIngredients.vue?vue&type=script&lang=js":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/ChooseIngredients.vue?vue&type=script&lang=js ***!
+  \***********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    var index = 0;
+    return {
+      index: index
+    };
+  },
+  methods: {
+    //Show hints depending on what is in ingredient input
+    showHint: function showHint(text, id) {
+      var dropdown = document.getElementById(id); //Purge old results
+
+      while (dropdown.firstChild) {
+        dropdown.removeChild(dropdown.firstChild);
+      }
+
+      if (text.length == 0) {
+        dropdown.innerHTML = "";
+      } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
+
+        xmlhttp.onload = function () {
+          var ingredients = JSON.parse(xmlhttp.responseText);
+          var index = 0;
+
+          var _iterator = _createForOfIteratorHelper(ingredients),
+              _step;
+
+          try {
+            var _loop = function _loop() {
+              var ingredient = _step.value;
+
+              //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
+              if (text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length) == ingredient["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length)) {
+                if (index < 4) {
+                  index++;
+                  dropdown.style.display = "block";
+                  var li = document.createElement("li");
+                  li.innerText = ingredient["name"];
+                  li.addEventListener("click", function (event) {
+                    var getHint = event.target;
+                    var getID = getHint.parentNode.id.replace("dropdown", "");
+                    var giveInputName = document.getElementById("ingredient" + getID);
+                    var giveInputId = document.getElementById("ingredientId" + getID);
+                    giveInputName.value = getHint.innerHTML;
+                    giveInputId.value = ingredient["id"];
+                    dropdown.style.display = "none";
+                  });
+                  var ul = document.getElementById(id);
+                  ul.appendChild(li);
+                }
+              }
+            };
+
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              _loop();
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
+        };
+
+        xmlhttp.send();
+      }
+    },
+    //Create Ingredient, Quantity Inputs if click on add ingredient
+    createIngredient: function createIngredient() {
+      var vm = this;
+      this.index++;
+      var getUl = document.getElementById("ingredients");
+      var li = document.createElement("li");
+      li.className = "ingredients";
+      var ingredient = document.createElement("input");
+      ingredient.placeholder = "Selectionner un ingrédient";
+      ingredient.id = "ingredient" + this.index;
+      ingredient.className = "ingredient";
+      ingredient.autocomplete = "off";
+      var ul = document.createElement("ul");
+      ul.id = "dropdown" + this.index;
+      var ingredientId = document.createElement("input");
+      ingredientId.id = "ingredientId" + this.index;
+      ingredientId.style.display = "none";
+      ingredientId.name = "ingredients[ingredientsId][]";
+      var quantity = document.createElement("input");
+      quantity.placeholder = "Choisir une quantité";
+      quantity.id = "quantity" + this.index;
+      quantity.className = "quantity";
+      quantity.name = "ingredients[quantity][]";
+      quantity.autocomplete = "off";
+      getUl.appendChild(li);
+      li.appendChild(ingredient);
+      li.appendChild(ingredientId);
+      li.appendChild(ul);
+      li.appendChild(quantity);
+      return document.getElementById("ingredient" + this.index).onkeyup = function () {
+        vm.showHint(this.value, ul.id);
+      };
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/Input.vue?vue&type=script&lang=js":
 /*!***********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/Input.vue?vue&type=script&lang=js ***!
@@ -16584,6 +16707,111 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     SearchBar: _components_SearchBar__WEBPACK_IMPORTED_MODULE_0__.default
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/VForTest.vue?vue&type=script&lang=js":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/VForTest.vue?vue&type=script&lang=js ***!
+  \**************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      items: [],
+      ingredients: {},
+      data: {}
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("http://127.0.0.1:8000/ingredients").then(function (response) {
+      return _this.data = response.data;
+    })["catch"](function (error) {
+      return console.log(error);
+    });
+  },
+  methods: {
+    createIngredient: function createIngredient() {
+      var index = 0;
+      this.items.push(index++);
+    },
+    showHint: function showHint(id) {
+      console.log(id);
+      var dropdown = document.getElementById("dropdown" + id);
+      var text = document.getElementById("ingredient" + id).value; //Purge old results
+
+      while (dropdown.firstChild) {
+        dropdown.removeChild(dropdown.firstChild);
+      }
+
+      if (text.length == 0) {
+        dropdown.innerHTML = "";
+      } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
+
+        xmlhttp.onload = function () {
+          var ingredients = JSON.parse(xmlhttp.responseText);
+          var index = 0;
+
+          var _iterator = _createForOfIteratorHelper(ingredients),
+              _step;
+
+          try {
+            var _loop = function _loop() {
+              var ingredient = _step.value;
+
+              //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
+              if (text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length) == ingredient["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length)) {
+                if (index < 4) {
+                  index++;
+                  dropdown.style.display = "block";
+                  var li = document.createElement("li");
+                  li.innerText = ingredient["name"];
+                  li.addEventListener("click", function (event) {
+                    var getHint = event.target;
+                    var getID = getHint.parentNode.id.replace("dropdown", "");
+                    var giveInputName = document.getElementById("ingredient" + getID);
+                    var giveInputId = document.getElementById("ingredientId" + getID);
+                    giveInputName.value = getHint.innerHTML;
+                    giveInputId.value = ingredient["id"];
+                    dropdown.style.display = "none";
+                  });
+                  var ul = document.getElementById(id);
+                  ul.appendChild(li);
+                }
+              }
+            };
+
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              _loop();
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
+        };
+
+        xmlhttp.send();
+      }
+    }
   }
 });
 
@@ -17046,7 +17274,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      this.$inertia.post(this.route("profile", this.form));
+      this.$inertia.post(this.route("updateEmail", this.form));
     }
   }
 });
@@ -17065,118 +17293,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Components_TheHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/TheHeader */ "./resources/js/Components/TheHeader.vue");
-/* harmony import */ var _Components_TheFooter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/TheFooter */ "./resources/js/Components/TheFooter.vue");
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+/* harmony import */ var _Components_ChooseIngredients__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/ChooseIngredients */ "./resources/js/Components/ChooseIngredients.vue");
+/* harmony import */ var _Components_VForTest__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Components/VForTest */ "./resources/js/Components/VForTest.vue");
+/* harmony import */ var _Components_TheFooter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Components/TheFooter */ "./resources/js/Components/TheFooter.vue");
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     TheHeader: _Components_TheHeader__WEBPACK_IMPORTED_MODULE_0__.default,
-    TheFooter: _Components_TheFooter__WEBPACK_IMPORTED_MODULE_1__.default
-  },
-  props: {
-    data: Array
+    ChooseIngredients: _Components_ChooseIngredients__WEBPACK_IMPORTED_MODULE_1__.default,
+    VForTest: _Components_VForTest__WEBPACK_IMPORTED_MODULE_2__.default,
+    TheFooter: _Components_TheFooter__WEBPACK_IMPORTED_MODULE_3__.default
   },
   data: function data() {
-    var index = 0;
     return {
-      index: index
+      form: {
+        name: "",
+        preparation_time: "",
+        cooking_time: "",
+        description: ""
+      }
     };
   },
   methods: {
-    //Show hints depending on what is in ingredient input
-    showHint: function showHint(text, id) {
-      var dropdown = document.getElementById(id); //Purge old results
-
-      while (dropdown.firstChild) {
-        dropdown.removeChild(dropdown.firstChild);
-      }
-
-      if (text.length == 0) {
-        dropdown.innerHTML = "";
-      } else {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
-
-        xmlhttp.onload = function () {
-          var ingredients = JSON.parse(xmlhttp.responseText);
-
-          var _iterator = _createForOfIteratorHelper(ingredients),
-              _step;
-
-          try {
-            var _loop = function _loop() {
-              var ingredient = _step.value;
-
-              if (text.toLowerCase().substr(0, text.length) == ingredient["name"].toLowerCase().substr(0, text.length)) {
-                console.log(ingredient);
-                dropdown.style.display = "block";
-                var li = document.createElement("li");
-                li.innerText = ingredient["name"];
-                li.addEventListener("click", function (event) {
-                  var getHint = event.target;
-                  var getID = getHint.parentNode.id.replace("dropdown", "");
-                  var giveInputName = document.getElementById("ingredient" + getID);
-                  var giveInputId = document.getElementById("ingredientId" + getID);
-                  giveInputName.value = getHint.innerHTML;
-                  giveInputId.value = ingredient["id"];
-                  dropdown.style.display = "none";
-                });
-                var ul = document.getElementById(id);
-                ul.appendChild(li);
-              }
-            };
-
-            for (_iterator.s(); !(_step = _iterator.n()).done;) {
-              _loop();
-            }
-          } catch (err) {
-            _iterator.e(err);
-          } finally {
-            _iterator.f();
-          }
-        };
-
-        xmlhttp.send();
-      }
-    },
-    //Create Ingredient, Quantity Inputs if click on add ingredient
-    createIngredient: function createIngredient() {
-      var vm = this;
-      this.index++;
-      var getUl = document.getElementById("ingredients");
-      var li = document.createElement("li");
-      li.className = "ingredients";
-      var ingredient = document.createElement("input");
-      ingredient.placeholder = "Selectionner un ingrédient";
-      ingredient.id = "ingredient" + this.index;
-      ingredient.className = "ingredient";
-      ingredient.autocomplete = "off";
-      var ul = document.createElement("ul");
-      ul.id = "dropdown" + this.index;
-      var ingredientId = document.createElement("input");
-      ingredientId.id = "ingredientId" + this.index;
-      ingredientId.style.display = "none";
-      ingredientId.name = "ingredients[ingredientsId][]";
-      var quantity = document.createElement("input");
-      quantity.placeholder = "Choisir une quantité";
-      quantity.id = "quantity" + this.index;
-      quantity.className = "quantity";
-      quantity.name = "ingredients[quantity][]";
-      quantity.autocomplete = "off";
-      getUl.appendChild(li);
-      li.appendChild(ingredient);
-      li.appendChild(ingredientId);
-      li.appendChild(ul);
-      li.appendChild(quantity);
-      return document.getElementById("ingredient" + this.index).onkeyup = function () {
-        vm.showHint(this.value, ul.id);
-      };
+    submit: function submit() {
+      this.$inertia.post(this.route("createRecipe", this.form));
     }
   }
 });
@@ -17394,6 +17537,47 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 8
   /* PROPS */
   , ["type"]);
+}
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/ChooseIngredients.vue?vue&type=template&id=083fd9f0":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/ChooseIngredients.vue?vue&type=template&id=083fd9f0 ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Ingrédients:", -1
+/* HOISTED */
+);
+
+var _hoisted_2 = {
+  id: "ingredients"
+};
+
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Ajouter un ingrédient", -1
+/* HOISTED */
+);
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    src: "/img/general/addMore.png",
+    alt: "",
+    id: "moreIngredients",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.createIngredient();
+    })
+  }), _hoisted_3])])], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -17762,6 +17946,87 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   })])])])])])]);
+}
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/VForTest.vue?vue&type=template&id=6f8edb20":
+/*!******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/VForTest.vue?vue&type=template&id=6f8edb20 ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Ingrédients:", -1
+/* HOISTED */
+);
+
+var _hoisted_2 = {
+  id: "ingredients"
+};
+
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Ajouter un ingrédient", -1
+/* HOISTED */
+);
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    src: "/img/general/addMore.png",
+    alt: "",
+    id: "moreIngredients",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.createIngredient();
+    })
+  }), _hoisted_3]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.items, function (item, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
+      key: index
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      type: "text",
+      id: 'ingredient' + index,
+      onKeyup: function onKeyup($event) {
+        return $options.showHint(index);
+      },
+      className: "ingredient",
+      placeholder: "Selectionner un ingrédient"
+    }, null, 40
+    /* PROPS, HYDRATE_EVENTS */
+    , ["id", "onKeyup"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ingredients, function (ingredient) {
+      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
+        id: 'dropdown' + index,
+        key: ingredient.name
+      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.name), 9
+      /* TEXT, PROPS */
+      , ["id"]);
+    }), 128
+    /* KEYED_FRAGMENT */
+    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      id: 'ingredientId' + index,
+      type: "text",
+      style: {
+        "display": "none"
+      }
+    }, null, 8
+    /* PROPS */
+    , ["id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      type: "text",
+      id: 'quantity' + index,
+      className: "quantity",
+      placeholder: "Choisir une quantité"
+    }, null, 8
+    /* PROPS */
+    , ["id"])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -18685,64 +18950,13 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_3 = {
-  action: "",
-  method: "post"
-};
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Préparation:", -1
+/* HOISTED */
+);
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-  id: "recipeName",
-  name: "recipeName",
-  type: "text",
-  placeholder: "Nom de ma recette",
-  autocomplete: "off"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-  name: "preparationTime",
-  type: "text",
-  placeholder: "Temps de préparation",
-  autocomplete: "off"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-  name: "cookingTime",
-  type: "text",
-  placeholder: "Temps de cuisson",
-  autocomplete: "off"
-})])], -1
-/* HOISTED */
-);
-
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Ingrédients:", -1
-/* HOISTED */
-);
-
-var _hoisted_7 = {
-  id: "ingredients"
-};
-
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Ajouter un ingrédient", -1
-/* HOISTED */
-);
-
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Préparation:", -1
-/* HOISTED */
-);
-
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
-  name: "preparation",
-  id: "preparation",
-  cols: "30",
-  rows: "10",
-  autocomplete: "off"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
   type: "submit",
-  value: "Valider"
+  value: "Enregistrer"
 }, null, -1
 /* HOISTED */
 );
@@ -18750,16 +18964,55 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_TheHeader = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TheHeader");
 
+  var _component_VForTest = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("VForTest");
+
   var _component_TheFooter = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TheFooter");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", _hoisted_3, [_hoisted_4, _hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-    src: "/img/general/addMore.png",
-    alt: "",
-    id: "moreIngredients",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.createIngredient();
-    })
-  }), _hoisted_8])]), _hoisted_9, _hoisted_10, _hoisted_11])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
+    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.submit && $options.submit.apply($options, arguments);
+    }, ["prevent"]))
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    id: "recipeName",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.form.name = $event;
+    }),
+    type: "text",
+    placeholder: "Nom de ma recette",
+    autocomplete: "off"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.form.preparation_time = $event;
+    }),
+    type: "text",
+    placeholder: "Temps de préparation",
+    autocomplete: "off"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.preparation_time]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.form.cooking_time = $event;
+    }),
+    type: "text",
+    placeholder: "Temps de cuisson",
+    autocomplete: "off"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.cooking_time]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VForTest), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $data.form.description = $event;
+    }),
+    id: "preparation",
+    cols: "30",
+    rows: "10",
+    autocomplete: "off"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), _hoisted_4], 32
+  /* HYDRATE_EVENTS */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -38857,6 +39110,32 @@ _Button_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file 
 
 /***/ }),
 
+/***/ "./resources/js/Components/ChooseIngredients.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/Components/ChooseIngredients.vue ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ChooseIngredients_vue_vue_type_template_id_083fd9f0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChooseIngredients.vue?vue&type=template&id=083fd9f0 */ "./resources/js/Components/ChooseIngredients.vue?vue&type=template&id=083fd9f0");
+/* harmony import */ var _ChooseIngredients_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChooseIngredients.vue?vue&type=script&lang=js */ "./resources/js/Components/ChooseIngredients.vue?vue&type=script&lang=js");
+
+
+
+_ChooseIngredients_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _ChooseIngredients_vue_vue_type_template_id_083fd9f0__WEBPACK_IMPORTED_MODULE_0__.render
+/* hot reload */
+if (false) {}
+
+_ChooseIngredients_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/Components/ChooseIngredients.vue"
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_ChooseIngredients_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
+
+/***/ }),
+
 /***/ "./resources/js/Components/Input.vue":
 /*!*******************************************!*\
   !*** ./resources/js/Components/Input.vue ***!
@@ -39051,6 +39330,32 @@ if (false) {}
 _TheHeaderPublic_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/Components/TheHeaderPublic.vue"
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_TheHeaderPublic_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
+
+/***/ }),
+
+/***/ "./resources/js/Components/VForTest.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/Components/VForTest.vue ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _VForTest_vue_vue_type_template_id_6f8edb20__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VForTest.vue?vue&type=template&id=6f8edb20 */ "./resources/js/Components/VForTest.vue?vue&type=template&id=6f8edb20");
+/* harmony import */ var _VForTest_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VForTest.vue?vue&type=script&lang=js */ "./resources/js/Components/VForTest.vue?vue&type=script&lang=js");
+
+
+
+_VForTest_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _VForTest_vue_vue_type_template_id_6f8edb20__WEBPACK_IMPORTED_MODULE_0__.render
+/* hot reload */
+if (false) {}
+
+_VForTest_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/Components/VForTest.vue"
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_VForTest_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
 
 /***/ }),
 
@@ -39458,6 +39763,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/Components/ChooseIngredients.vue?vue&type=script&lang=js":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/Components/ChooseIngredients.vue?vue&type=script&lang=js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ChooseIngredients_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ChooseIngredients_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ChooseIngredients.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/ChooseIngredients.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/Components/Input.vue?vue&type=script&lang=js":
 /*!*******************************************************************!*\
   !*** ./resources/js/Components/Input.vue?vue&type=script&lang=js ***!
@@ -39566,6 +39887,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TheHeaderPublic_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TheHeaderPublic_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TheHeaderPublic.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/TheHeaderPublic.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./resources/js/Components/VForTest.vue?vue&type=script&lang=js":
+/*!**********************************************************************!*\
+  !*** ./resources/js/Components/VForTest.vue?vue&type=script&lang=js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VForTest_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VForTest_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./VForTest.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/VForTest.vue?vue&type=script&lang=js");
  
 
 /***/ }),
@@ -39810,6 +40147,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/Components/ChooseIngredients.vue?vue&type=template&id=083fd9f0":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/Components/ChooseIngredients.vue?vue&type=template&id=083fd9f0 ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ChooseIngredients_vue_vue_type_template_id_083fd9f0__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ChooseIngredients_vue_vue_type_template_id_083fd9f0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ChooseIngredients.vue?vue&type=template&id=083fd9f0 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/ChooseIngredients.vue?vue&type=template&id=083fd9f0");
+
+
+/***/ }),
+
 /***/ "./resources/js/Components/Input.vue?vue&type=template&id=43da0f8f":
 /*!*************************************************************************!*\
   !*** ./resources/js/Components/Input.vue?vue&type=template&id=43da0f8f ***!
@@ -39918,6 +40271,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TheHeaderPublic_vue_vue_type_template_id_5d6ea36c__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TheHeaderPublic_vue_vue_type_template_id_5d6ea36c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TheHeaderPublic.vue?vue&type=template&id=5d6ea36c */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/TheHeaderPublic.vue?vue&type=template&id=5d6ea36c");
+
+
+/***/ }),
+
+/***/ "./resources/js/Components/VForTest.vue?vue&type=template&id=6f8edb20":
+/*!****************************************************************************!*\
+  !*** ./resources/js/Components/VForTest.vue?vue&type=template&id=6f8edb20 ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VForTest_vue_vue_type_template_id_6f8edb20__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VForTest_vue_vue_type_template_id_6f8edb20__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./VForTest.vue?vue&type=template&id=6f8edb20 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Components/VForTest.vue?vue&type=template&id=6f8edb20");
 
 
 /***/ }),

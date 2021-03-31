@@ -34,7 +34,7 @@ Route::get('/profile', [ProfileController::class, 'create'])
 
 Route::post('/profile', [ProfileController::class, 'updateEmail'])
     ->middleware(['auth', 'verified'])
-    ->name('profile');
+    ->name('updateEmail');
 
 Route::get('/recipes', [RecipesController::class, 'create'])
     ->middleware(['auth', 'verified']);
@@ -44,5 +44,9 @@ Route::get('/recipeform', [RecipeFormController::class, 'create'])
 
 Route::get('/ingredients', [RecipeFormController::class, 'ingredients'])
     ->middleware(['auth', 'verified']);
+
+Route::post('/recipeform', [RecipeFormController::class, 'createRecipe'])
+    ->middleware(['auth', 'verified'])
+    ->name('createRecipe');
 
 require __DIR__ . '/auth.php';
