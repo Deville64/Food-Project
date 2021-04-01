@@ -16733,35 +16733,34 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   data: function data() {
     return {
       items: [],
-      ingredients: {},
-      data: {}
+      dataIngredients: []
     };
-  },
-  created: function created() {
-    var _this = this;
-
-    axios.get("http://127.0.0.1:8000/ingredients").then(function (response) {
-      return _this.data = response.data;
-    })["catch"](function (error) {
-      return console.log(error);
-    });
   },
   methods: {
     createIngredient: function createIngredient() {
       var index = 0;
       this.items.push(index++);
     },
+    selectHint: function selectHint(index, ingredientId) {
+      var dropdown = document.getElementById("dropdown" + index);
+      var getHint = document.getElementById("list" + ingredientId);
+      var giveInputName = document.getElementById("ingredient" + index);
+      var giveInputId = document.getElementById("ingredientId" + index);
+      giveInputName.value = getHint.innerHTML;
+      giveInputId.value = ingredientId;
+      dropdown.style.display = "none";
+    },
     showHint: function showHint(id) {
-      console.log(id);
+      var vm = this;
       var dropdown = document.getElementById("dropdown" + id);
       var text = document.getElementById("ingredient" + id).value; //Purge old results
 
-      while (dropdown.firstChild) {
-        dropdown.removeChild(dropdown.firstChild);
+      while (dropdown.children[0]) {
+        dropdown.removeChild(dropdown.children[0]);
       }
 
       if (text.length == 0) {
-        dropdown.innerHTML = "";
+        dropdown.style.display = "none";
       } else {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
@@ -16774,33 +16773,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
               _step;
 
           try {
-            var _loop = function _loop() {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
               var ingredient = _step.value;
 
               //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
               if (text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length) == ingredient["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length)) {
-                if (index < 4) {
+                if (index < 3) {
                   index++;
                   dropdown.style.display = "block";
-                  var li = document.createElement("li");
-                  li.innerText = ingredient["name"];
-                  li.addEventListener("click", function (event) {
-                    var getHint = event.target;
-                    var getID = getHint.parentNode.id.replace("dropdown", "");
-                    var giveInputName = document.getElementById("ingredient" + getID);
-                    var giveInputId = document.getElementById("ingredientId" + getID);
-                    giveInputName.value = getHint.innerHTML;
-                    giveInputId.value = ingredient["id"];
-                    dropdown.style.display = "none";
-                  });
-                  var ul = document.getElementById(id);
-                  ul.appendChild(li);
+                  var element = {};
+                  var ingredientId = ingredient["id"];
+                  element.id = ingredient["id"];
+                  element.name = ingredient["name"];
+                  vm.dataIngredients.push(element);
                 }
               }
-            };
-
-            for (_iterator.s(); !(_step = _iterator.n()).done;) {
-              _loop();
             }
           } catch (err) {
             _iterator.e(err);
@@ -17997,16 +17984,26 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       placeholder: "Selectionner un ingrédient"
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
-    , ["id", "onKeyup"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ingredients, function (ingredient) {
+    , ["id", "onKeyup"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", {
+      id: 'dropdown' + index,
+      style: {
+        "display": "none"
+      }
+    }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.dataIngredients, function (ingredient) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
-        id: 'dropdown' + index,
-        key: ingredient.name
+        key: ingredient.name,
+        onClick: function onClick($event) {
+          return $options.selectHint(index, ingredient.id);
+        },
+        id: 'list' + ingredient.id
       }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.name), 9
       /* TEXT, PROPS */
-      , ["id"]);
+      , ["onClick", "id"]);
     }), 128
     /* KEYED_FRAGMENT */
-    ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    ))], 8
+    /* PROPS */
+    , ["id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
       id: 'ingredientId' + index,
       type: "text",
       style: {

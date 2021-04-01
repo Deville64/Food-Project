@@ -19,11 +19,13 @@
         className="ingredient"
         placeholder="Selectionner un ingrédient"
       />
-      <ul>
+
+      <ul :id="'dropdown' + index" style="display: none">
         <li
-          :id="'dropdown' + index"
-          v-for="ingredient in ingredients"
+          v-for="ingredient in dataIngredients"
           :key="ingredient.name"
+          @click="selectHint(index, ingredient.id)"
+          :id="'list' + ingredient.id"
         >
           {{ ingredient.name }}
         </li>
@@ -44,33 +46,38 @@ export default {
   data() {
     return {
       items: [],
-      ingredients: {},
-      data: {},
+      dataIngredients: [],
     };
   },
-  created() {
-    axios
-      .get("http://127.0.0.1:8000/ingredients")
-      .then((response) => (this.data = response.data))
-      .catch((error) => console.log(error));
-  },
+
   methods: {
     createIngredient() {
       let index = 0;
       this.items.push(index++);
     },
+    selectHint(index, ingredientId) {
+      const dropdown = document.getElementById("dropdown" + index);
+      let getHint = document.getElementById("list" + ingredientId);
+      let giveInputName = document.getElementById("ingredient" + index);
+      let giveInputId = document.getElementById("ingredientId" + index);
+
+      giveInputName.value = getHint.innerHTML;
+      giveInputId.value = ingredientId;
+
+      dropdown.style.display = "none";
+    },
     showHint(id) {
-      console.log(id);
+      const vm = this;
       const dropdown = document.getElementById("dropdown" + id);
       const text = document.getElementById("ingredient" + id).value;
 
       //Purge old results
-      while (dropdown.firstChild) {
-        dropdown.removeChild(dropdown.firstChild);
+      while (dropdown.children[0]) {
+        dropdown.removeChild(dropdown.children[0]);
       }
 
       if (text.length == 0) {
-        dropdown.innerHTML = "";
+        dropdown.style.display = "none";
       } else {
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", "http://127.0.0.1:8000/ingredients");
@@ -91,24 +98,15 @@ export default {
                 .replace(/[\u0300-\u036f]/g, "")
                 .substr(0, text.length)
             ) {
-              if (index < 4) {
+              if (index < 3) {
                 index++;
+                dropdown.style.display = "block";
 
-                li.addEventListener("click", function (event) {
-                  let getHint = event.target;
-                  let getID = getHint.parentNode.id.replace("dropdown", "");
-                  let giveInputName = document.getElementById(
-                    "ingredient" + getID
-                  );
-                  let giveInputId = document.getElementById(
-                    "ingredientId" + getID
-                  );
-
-                  giveInputName.value = getHint.innerHTML;
-                  giveInputId.value = ingredient["id"];
-
-                  dropdown.style.display = "none";
-                });
+                let element = {};
+                let ingredientId = ingredient["id"];
+                element.id = ingredient["id"];
+                element.name = ingredient["name"];
+                vm.dataIngredients.push(element);
               }
             }
           }
