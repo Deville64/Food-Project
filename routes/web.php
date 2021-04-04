@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipesController;
+use App\Http\Controllers\MyRecipeController;
 use App\Http\Controllers\RecipeFormController;
 
 /*
@@ -48,5 +49,9 @@ Route::get('/ingredients', [RecipeFormController::class, 'ingredients'])
 Route::post('/recipeform', [RecipeFormController::class, 'createRecipe'])
     ->middleware(['auth', 'verified'])
     ->name('createRecipe');
+
+Route::get('/myrecipe/{id}', [MyRecipeController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('myRecipe');
 
 require __DIR__ . '/auth.php';

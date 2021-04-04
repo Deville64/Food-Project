@@ -62,14 +62,13 @@
               {{ ingredient.name }}
             </li>
           </ul>
-          <input :id="'ingredientId' + index" type="text" />
+          <input :id="'ingredientId' + index" type="text" style="display: none" />
           <input
             type="text"
             :id="'quantity' + index"
             className="quantity"
             placeholder="Choisir une quantité"
             autocomplete="off"
-            style="display: none"
           />
         </li>
       </ul>

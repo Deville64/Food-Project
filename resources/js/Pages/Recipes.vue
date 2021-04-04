@@ -3,11 +3,15 @@
   <main id="myRecipes" class="wrapper">
     <h1>Mes recettes</h1>
     <ul id="recipes">
-      <li>
+      <li v-for="recipe in recipes" :key="recipe">
+        <inertia-link :href="'/myrecipe/' + recipe.id">{{
+          recipe.name
+        }}</inertia-link>
         <h2></h2>
       </li>
       <li>
-        <inertia-link href="/recipeform"><img id="addMore" src="/img/general/addMore.png" alt=""
+        <inertia-link href="/recipeform"
+          ><img id="addMore" src="/img/general/addMore.png" alt=""
         /></inertia-link>
       </li>
     </ul>
@@ -22,6 +26,9 @@ export default {
   components: {
     TheHeader,
     TheFooter,
+  },
+  props: {
+    recipes: Array,
   },
 };
 </script>
