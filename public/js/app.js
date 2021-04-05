@@ -17121,6 +17121,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     };
   },
   methods: {
+    deleteIngredient: function deleteIngredient(index) {
+      var myLi = document.getElementById("li" + index);
+      myLi.remove();
+    },
     submit: function submit() {
       var dropdownLength = document.getElementsByClassName("dropdown").length;
       var dropdownIndex = dropdownLength - 1;
@@ -18824,7 +18828,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }), _hoisted_5]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.items, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
-      key: index
+      key: index,
+      id: 'li' + index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
       type: "text",
       id: 'ingredient' + index,
@@ -18872,7 +18877,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       autocomplete: "off"
     }, null, 8
     /* PROPS */
-    , ["id"])]);
+    , ["id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      type: "button",
+      value: "X",
+      onClick: function onClick($event) {
+        return $options.deleteIngredient(index);
+      }
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])], 8
+    /* PROPS */
+    , ["id"]);
   }), 128
   /* KEYED_FRAGMENT */
   ))]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {

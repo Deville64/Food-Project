@@ -42,7 +42,7 @@
           <p>Ajouter un ingrédient</p>
         </li>
 
-        <li v-for="(item, index) in items" :key="index">
+        <li v-for="(item, index) in items" :key="index" :id="'li' + index">
           <input
             type="text"
             :id="'ingredient' + index"
@@ -62,7 +62,11 @@
               {{ ingredient.name }}
             </li>
           </ul>
-          <input :id="'ingredientId' + index" type="text" style="display: none" />
+          <input
+            :id="'ingredientId' + index"
+            type="text"
+            style="display: none"
+          />
           <input
             type="text"
             :id="'quantity' + index"
@@ -70,6 +74,7 @@
             placeholder="Choisir une quantité"
             autocomplete="off"
           />
+          <input type="button" value="X" @click="deleteIngredient(index)" />
         </li>
       </ul>
 
@@ -113,6 +118,10 @@ export default {
   },
 
   methods: {
+    deleteIngredient(index) {
+      const myLi = document.getElementById("li" + index);
+      myLi.remove();
+    },
     submit() {
       const dropdownLength = document.getElementsByClassName("dropdown").length;
       const dropdownIndex = dropdownLength - 1;
