@@ -9,10 +9,10 @@
     <ul>
       <li v-for="ingredient in ingredients" :key="ingredient">
         {{ ingredient.name }}
+        {{ ingredient.quantity }}
       </li>
     </ul>
     <p>{{ myrecipe.description }}</p>
-    {{ ingredients }}
   </main>
   <TheFooter />
 </template>
