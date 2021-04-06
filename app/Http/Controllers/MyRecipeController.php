@@ -12,26 +12,33 @@ class MyRecipeController extends Controller
     {
         $user = Auth::user();
         $userId = $user->id;
-        $recipe = DB::select('SELECT * FROM recipes WHERE id = ? AND user_id =?', [$id, $userId]);
+        $DataExist = DB::table('recipes')->where('id', $id)->value('user_id', $userId);
 
-        $recipesIngredients = DB::select('SELECT ingredients_id, quantity FROM recipes_ingredients WHERE recipes_id = ?', [$id]);
-        $ingredientsData = array();
+        //Check if userId has this recipe, if yes show recepe otherwise display error
+        if ($DataExist) {
+            $recipe = DB::select('SELECT * FROM recipes WHERE id = ? AND user_id =?', [$id, $userId]);
 
-        foreach ($recipesIngredients as $recipeIngredient) {
-            $ingredientId = $recipeIngredient->ingredients_id;
-            $ingredientQuantity = $recipeIngredient->quantity;
-            $ingredients = DB::select('SELECT name FROM ingredients WHERE id = ?', [$ingredientId]);
+            $recipesIngredients = DB::select('SELECT ingredients_id, quantity FROM recipes_ingredients WHERE recipes_id = ?', [$id]);
+            $ingredientsData = array();
 
-            foreach ($ingredients as $ingredient) {
-                $ingredientName = $ingredient->name;
-                $test = array('name' => $ingredientName, 'quantity' => $ingredientQuantity);
-                json_encode($test);
-                $ingredientsData[] = $test;
+            foreach ($recipesIngredients as $recipeIngredient) {
+                $ingredientId = $recipeIngredient->ingredients_id;
+                $ingredientQuantity = $recipeIngredient->quantity;
+                $ingredients = DB::select('SELECT name FROM ingredients WHERE id = ?', [$ingredientId]);
+
+                foreach ($ingredients as $ingredient) {
+                    $ingredientName = $ingredient->name;
+                    $test = array('name' => $ingredientName, 'quantity' => $ingredientQuantity);
+                    json_encode($test);
+                    $ingredientsData[] = $test;
+                }
             }
+            return Inertia::render('MyRecipe', [
+                'recipe' => $recipe,
+                'ingredients' => $ingredientsData
+            ]);
+        } else {
+            abort(404);
         }
-        return Inertia::render('MyRecipe', [
-            'recipe' => $recipe,
-            'ingredients' => $ingredientsData
-        ]);
     }
 }
