@@ -13,6 +13,9 @@
       </li>
     </ul>
     <p>{{ myrecipe.description }}</p>
+    <inertia-link :href="'/modifymyrecipe/' + myrecipe.id"
+      >Modifier ma recette</inertia-link
+    >
   </main>
   <TheFooter />
 </template>
