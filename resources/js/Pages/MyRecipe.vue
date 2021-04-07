@@ -16,6 +16,10 @@
     <inertia-link :href="'/modifymyrecipe/' + myrecipe.id"
       >Modifier ma recette</inertia-link
     >
+    <inertia-link type="button" :href="'/deletemyrecipe/' + myrecipe.id"
+      >Supprimer ma recette</inertia-link
+    >
+    <!-- <input type="button" value="Supprimer ma recette"  @click="deleteRecipe(myrecipe.id)"/> -->
   </main>
   <TheFooter />
 </template>
@@ -32,6 +36,11 @@ export default {
   props: {
     recipe: Object,
     ingredients: Object,
+  },
+  methods: {
+    deleteRecipe(id) {
+      this.$inertia.post(this.route("deleteRecipe"));
+    },
   },
 };
 </script>

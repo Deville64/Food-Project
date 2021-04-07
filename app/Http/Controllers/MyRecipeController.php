@@ -41,4 +41,17 @@ class MyRecipeController extends Controller
             abort(404);
         }
     }
+
+    public function deleteRecepe($id)
+    {
+        $user = Auth::user();
+        $userId = $user->id;
+        $DataExist = DB::table('recipes')->where('id', $id)->value('user_id', $userId);
+        if ($DataExist) {
+            //Delete first ingredients then recipe
+            DB::delete('DELETE FROM recipes_ingredients WHERE recipes_id = ?', [$id]);
+            DB::delete('DELETE FROM recipes WHERE id = ?', [$id]);
+            return redirect()->route('recipes');
+        }
+    }
 }
