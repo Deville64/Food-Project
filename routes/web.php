@@ -39,7 +39,8 @@ Route::post('/profile', [ProfileController::class, 'updateEmail'])
     ->name('updateEmail');
 
 Route::get('/recipes', [RecipesController::class, 'create'])
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified'])
+    ->name('recipes');
 
 Route::get('/recipeform', [RecipeFormController::class, 'create'])
     ->middleware(['auth', 'verified']);
@@ -52,11 +53,12 @@ Route::post('/recipeform', [RecipeFormController::class, 'createRecipe'])
     ->name('createRecipe');
 
 Route::get('/myrecipe/{id}', [MyRecipeController::class, 'create'])
-    ->middleware(['auth', 'verified'])
-    ->name('myRecipe');
+    ->middleware(['auth', 'verified']);
 
-    Route::get('/modifymyrecipe/{id}', [ModifyMyRecipeController::class, 'create'])
-    ->middleware(['auth', 'verified'])
-    ->name('modifymyrecipe');
+Route::get('/deletemyrecipe/{id}', [MyRecipeController::class, 'deleteRecepe'])
+    ->middleware(['auth', 'verified']);
+
+Route::get('/modifymyrecipe/{id}', [ModifyMyRecipeController::class, 'create'])
+    ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

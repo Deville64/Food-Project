@@ -41,6 +41,6 @@ class RecipeFormController extends Controller
             $data[] = '("' . $recipeId . '","' . $recipes_ingredients[$i]['ingredients_id'] . '","' . $recipes_ingredients[$i]['quantity'] . '")';
         }
         DB::insert('INSERT INTO recipes_ingredients ( recipes_id, ingredients_id, quantity)  VALUES' . implode(',', $data));
-        return Inertia::render('Home');
+        return redirect()->route('recipes');
     }
 }
