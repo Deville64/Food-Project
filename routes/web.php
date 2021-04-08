@@ -61,4 +61,8 @@ Route::get('/deletemyrecipe/{id}', [MyRecipeController::class, 'deleteRecepe'])
 Route::get('/modifymyrecipe/{id}', [ModifyMyRecipeController::class, 'create'])
     ->middleware(['auth', 'verified']);
 
+Route::post('/updateRecipe', [ModifyMyRecipeController::class, 'updateRecipe'])
+    ->middleware(['auth', 'verified'])
+    ->name('updateRecipe');
+
 require __DIR__ . '/auth.php';

@@ -17146,25 +17146,56 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      updateForm: {
-        name: "",
-        preparation_time: "",
-        cooking_time: "",
-        description: "",
-        recipes_ingredients: []
-      },
-      items: [],
-      dataIngredients: []
+      form: {
+        id: this.recipe[0].id,
+        name: this.recipe[0].name,
+        preparation_time: this.recipe[0].preparation_time,
+        cooking_time: this.recipe[0].cooking_time,
+        description: this.recipe[0].description,
+        ingredientsToUpdate: [],
+        ingredientsToDelete: [],
+        ingredientsToAdd: []
+      }
     };
   },
   methods: {
     deleteIngredient: function deleteIngredient(index) {
-      var myLi = document.getElementById("li" + index);
+      var getIngredientId = document.getElementById("ingredientId" + index).innerText;
+      this.form.ingredientsToDelete.push({
+        ingredients_id: getIngredientId
+      });
+      var myLi = document.getElementById("updateIngredient" + index);
       myLi.remove();
+      console.log(this.form.ingredientsToDelete);
     },
-    createIngredient: function createIngredient() {
-      var index = 0;
-      this.items.push(index++);
+    submit: function submit(id) {
+      var dropdownToUpdateLength = document.getElementsByClassName("dropdownToUpdate").length;
+      var dropdownToUpdateIndex = dropdownToUpdateLength - 1;
+
+      if (dropdownToUpdateIndex != 0) {
+        for (var index = 0; index <= dropdownToUpdateIndex; index++) {
+          var getQuantity = document.getElementById("quantity" + index).value;
+          var getIngredientId = document.getElementById("ingredientId" + index).innerText;
+          this.form.ingredientsToUpdate.push({
+            ingredients_id: getIngredientId,
+            quantity: getQuantity
+          });
+        }
+      }
+
+      var dropdownToCreateLength = document.getElementsByClassName("dropdownToCreate").length;
+      var dropdownToCreateIndex = dropdownToCreateLength - 1;
+
+      for (var _index = 0; _index <= dropdownToCreateIndex; _index++) {
+        var _getQuantity = document.getElementById("quantity" + _index).value;
+        var _getIngredientId = document.getElementById("ingredientId" + _index).value;
+        this.form.ingredientsToAdd.push({
+          ingredients_id: _getIngredientId,
+          quantity: _getQuantity
+        });
+      }
+
+      this.$inertia.post(this.route("updateRecipe", this.form));
     }
   }
 });
@@ -17274,17 +17305,15 @@ __webpack_require__.r(__webpack_exports__);
         cooking_time: "",
         description: "",
         recipes_ingredients: []
-      },
-      items: [],
-      dataIngredients: []
+      }
     };
   },
   methods: {
     submit: function submit() {
-      var dropdownLength = document.getElementsByClassName("dropdown").length;
-      var dropdownIndex = dropdownLength - 1;
+      var dropdownToCreateLength = document.getElementsByClassName("dropdownToCreate").length;
+      var dropdownToCreateIndex = dropdownToCreateLength - 1;
 
-      for (var index = 0; index <= dropdownIndex; index++) {
+      for (var index = 0; index <= dropdownToCreateIndex; index++) {
         var getQuantity = document.getElementById("quantity" + index).value;
         var getIngredientId = document.getElementById("ingredientId" + index).value;
         this.form.recipes_ingredients.push({
@@ -17514,7 +17543,7 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     src: "/img/general/addMore.png",
     alt: "",
     id: "moreIngredients",
@@ -17537,7 +17566,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
     , ["id", "onKeyup"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", {
-      "class": "dropdown",
+      "class": "dropdownToCreate",
       id: 'dropdown' + index,
       style: {
         "display": "none"
@@ -17585,9 +17614,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["id"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))], 64
-  /* STABLE_FRAGMENT */
-  );
+  ))]);
 }
 
 /***/ }),
@@ -18792,6 +18819,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _hoisted_1 = {
+  "class": "dropdownToUpdate"
+};
+
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+  type: "submit",
+  value: "Enregistrer"
+}, null, -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_TheHeader = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TheHeader");
 
@@ -18799,74 +18837,77 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_TheFooter = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TheFooter");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.recipe, function (updateMyRecipe) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("form", {
-      key: updateMyRecipe
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
+    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $options.submit($props.recipe[0].id);
+    }, ["prevent"]))
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    type: "text",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.form.name = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    type: "text",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.form.preparation_time = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.preparation_time]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    type: "text",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.form.cooking_time = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.cooking_time]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredients, function (ingredient, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
+      key: index,
+      id: 'updateIngredient' + index
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.name) + " ", 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+      style: {
+        "display": "none"
+      },
+      id: 'ingredientId' + index
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.id), 9
+    /* TEXT, PROPS */
+    , ["id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
       type: "text",
+      id: 'quantity' + index,
       "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return updateMyRecipe.name = $event;
+        return ingredient.quantity = $event;
       }
     }, null, 8
     /* PROPS */
-    , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, updateMyRecipe.name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-      type: "text",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return updateMyRecipe.preparation_time = $event;
+    , ["id", "onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, ingredient.quantity]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      type: "button",
+      value: "X",
+      onClick: function onClick($event) {
+        return $options.deleteIngredient(index);
       }
     }, null, 8
     /* PROPS */
-    , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, updateMyRecipe.preparation_time]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-      type: "text",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return updateMyRecipe.cooking_time = $event;
-      }
-    }, null, 8
+    , ["onClick"])], 8
     /* PROPS */
-    , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, updateMyRecipe.cooking_time]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredients, function (ingredient, index) {
-      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
-        key: index,
-        id: 'li' + index
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "text",
-        "onUpdate:modelValue": function onUpdateModelValue($event) {
-          return ingredient.name = $event;
-        }
-      }, null, 8
-      /* PROPS */
-      , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, ingredient.name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "text",
-        "onUpdate:modelValue": function onUpdateModelValue($event) {
-          return ingredient.quantity = $event;
-        }
-      }, null, 8
-      /* PROPS */
-      , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, ingredient.quantity]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "button",
-        value: "X",
-        onClick: function onClick($event) {
-          return $options.deleteIngredient(index);
-        }
-      }, null, 8
-      /* PROPS */
-      , ["onClick"])], 8
-      /* PROPS */
-      , ["id"]);
-    }), 128
-    /* KEYED_FRAGMENT */
-    )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_AddIngredients)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
-      id: "",
-      cols: "30",
-      rows: "10",
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return updateMyRecipe.description = $event;
-      }
-    }, null, 8
-    /* PROPS */
-    , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, updateMyRecipe.description]])]);
+    , ["id"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_AddIngredients), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+    id: "",
+    cols: "30",
+    rows: "10",
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $data.form.description = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), _hoisted_2], 32
+  /* HYDRATE_EVENTS */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -19078,15 +19119,11 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_4 = {
-  id: "ingredients"
-};
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Préparation:", -1
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Préparation:", -1
 /* HOISTED */
 );
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
   type: "submit",
   value: "Enregistrer"
 }, null, -1
@@ -19132,7 +19169,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.cooking_time]])])]), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_AddIngredients)]), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.cooking_time]])])]), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_AddIngredients), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.form.description = $event;
     }),
@@ -19142,7 +19179,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), _hoisted_6], 32
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), _hoisted_5], 32
   /* HYDRATE_EVENTS */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
   /* STABLE_FRAGMENT */

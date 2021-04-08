@@ -1,44 +1,46 @@
 <template>
-  <li>
-    <img
-      src="/img/general/addMore.png"
-      alt=""
-      id="moreIngredients"
-      @click="createIngredient()"
-    />
-    <p>Ajouter un ingrédient</p>
-  </li>
+  <ul>
+    <li>
+      <img
+        src="/img/general/addMore.png"
+        alt=""
+        id="moreIngredients"
+        @click="createIngredient()"
+      />
+      <p>Ajouter un ingrédient</p>
+    </li>
 
-  <li v-for="(item, index) in items" :key="index" :id="'li' + index">
-    <input
-      type="text"
-      :id="'ingredient' + index"
-      @keyup="showHint(index)"
-      className="ingredient"
-      placeholder="Selectionner un ingrédient"
-      autocomplete="off"
-    />
+    <li v-for="(item, index) in items" :key="index" :id="'li' + index">
+      <input
+        type="text"
+        :id="'ingredient' + index"
+        @keyup="showHint(index)"
+        className="ingredient"
+        placeholder="Selectionner un ingrédient"
+        autocomplete="off"
+      />
 
-    <ul class="dropdown" :id="'dropdown' + index" style="display: none">
-      <li
-        v-for="ingredient in dataIngredients"
-        :key="ingredient.name"
-        @click="selectHint(index, ingredient.id)"
-        :id="'list' + ingredient.id"
-      >
-        {{ ingredient.name }}
-      </li>
-    </ul>
-    <input :id="'ingredientId' + index" type="text" style="display: none" />
-    <input
-      type="text"
-      :id="'quantity' + index"
-      className="quantity"
-      placeholder="Choisir une quantité"
-      autocomplete="off"
-    />
-    <input type="button" value="X" @click="deleteIngredient(index)" />
-  </li>
+      <ul class="dropdownToCreate" :id="'dropdown' + index" style="display: none">
+        <li
+          v-for="ingredient in dataIngredients"
+          :key="ingredient.name"
+          @click="selectHint(index, ingredient.id)"
+          :id="'list' + ingredient.id"
+        >
+          {{ ingredient.name }}
+        </li>
+      </ul>
+      <input :id="'ingredientId' + index" type="text" style="display: none" />
+      <input
+        type="text"
+        :id="'quantity' + index"
+        className="quantity"
+        placeholder="Choisir une quantité"
+        autocomplete="off"
+      />
+      <input type="button" value="X" @click="deleteIngredient(index)" />
+    </li>
+  </ul>
 </template>
 
 <script>

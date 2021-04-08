@@ -1,30 +1,31 @@
 <template>
   <TheHeader />
   <main>
-    <form v-for="updateMyRecipe in recipe" :key="updateMyRecipe">
-      <input type="text" v-model="updateMyRecipe.name" />
+    <form @submit.prevent="submit(recipe[0].id)">
+      <input type="text" v-model="form.name" />
       <ul>
-        <li><input type="text" v-model="updateMyRecipe.preparation_time" /></li>
-        <li><input type="text" v-model="updateMyRecipe.cooking_time" /></li>
+        <li><input type="text" v-model="form.preparation_time" /></li>
+        <li><input type="text" v-model="form.cooking_time" /></li>
       </ul>
-      <ul>
+      <ul class="dropdownToUpdate">
         <li
           v-for="(ingredient, index) in ingredients"
           :key="index"
-          :id="'li' + index"
+          :id="'updateIngredient' + index"
         >
-          <input type="text" v-model="ingredient.name" />
-          <input type="text" v-model="ingredient.quantity" />
+          {{ ingredient.name }}
+          <span style="display: none" :id="'ingredientId' + index">{{ ingredient.id }}</span>
+          <input
+            type="text"
+            :id="'quantity' + index"
+            v-model="ingredient.quantity"
+          />
           <input type="button" value="X" @click="deleteIngredient(index)" />
         </li>
-        <AddIngredients />
       </ul>
-      <textarea
-        id=""
-        cols="30"
-        rows="10"
-        v-model="updateMyRecipe.description"
-      ></textarea>
+      <AddIngredients />
+      <textarea id="" cols="30" rows="10" v-model="form.description"></textarea>
+      <input type="submit" value="Enregistrer" />
     </form>
   </main>
   <TheFooter />
@@ -46,25 +47,58 @@ export default {
   },
   data() {
     return {
-      updateForm: {
-        name: "",
-        preparation_time: "",
-        cooking_time: "",
-        description: "",
-        recipes_ingredients: [],
+      form: {
+        id: this.recipe[0].id,
+        name: this.recipe[0].name,
+        preparation_time: this.recipe[0].preparation_time,
+        cooking_time: this.recipe[0].cooking_time,
+        description: this.recipe[0].description,
+        ingredientsToUpdate: [],
+        ingredientsToDelete: [],
+        ingredientsToAdd: [],
       },
-      items: [],
-      dataIngredients: [],
     };
   },
   methods: {
     deleteIngredient(index) {
-      const myLi = document.getElementById("li" + index);
+      let getIngredientId = document.getElementById("ingredientId" + index)
+        .innerText;
+      this.form.ingredientsToDelete.push({
+        ingredients_id: getIngredientId,
+      });
+      const myLi = document.getElementById("updateIngredient" + index);
       myLi.remove();
+      console.log(this.form.ingredientsToDelete);
     },
-    createIngredient() {
-      let index = 0;
-      this.items.push(index++);
+    submit(id) {
+      const dropdownToUpdateLength = document.getElementsByClassName("dropdownToUpdate").length;
+      const dropdownToUpdateIndex = dropdownToUpdateLength - 1;
+
+      if (dropdownToUpdateIndex != 0) {
+        for (let index = 0; index <= dropdownToUpdateIndex; index++) {
+          let getQuantity = document.getElementById("quantity" + index).value;
+          let getIngredientId = document.getElementById("ingredientId" + index)
+            .innerText;
+          this.form.ingredientsToUpdate.push({
+            ingredients_id: getIngredientId,
+            quantity: getQuantity,
+          });
+        }
+      }
+
+      const dropdownToCreateLength = document.getElementsByClassName("dropdownToCreate").length;
+      const dropdownToCreateIndex = dropdownToCreateLength - 1;
+
+      for (let index = 0; index <= dropdownToCreateIndex; index++) {
+        let getQuantity = document.getElementById("quantity" + index).value;
+        let getIngredientId = document.getElementById("ingredientId" + index)
+          .value;
+        this.form.ingredientsToAdd.push({
+          ingredients_id: getIngredientId,
+          quantity: getQuantity,
+        });
+      }
+      this.$inertia.post(this.route("updateRecipe", this.form));
     },
   },
 };

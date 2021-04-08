@@ -29,7 +29,7 @@ class ModifyMyRecipeController extends Controller
 
                 foreach ($ingredients as $ingredient) {
                     $ingredientName = $ingredient->name;
-                    $test = array('name' => $ingredientName, 'quantity' => $ingredientQuantity);
+                    $test = array('id' => $ingredientId, 'name' => $ingredientName, 'quantity' => $ingredientQuantity);
                     json_encode($test);
                     $ingredientsData[] = $test;
                 }
@@ -41,5 +41,56 @@ class ModifyMyRecipeController extends Controller
         } else {
             abort(404);
         }
+    }
+
+    public function updateRecipe(Request $request)
+    {
+        //Update data in recipes table
+        $user = Auth::user();
+        $userId = $user->id;
+        $recipeId = $request->input('id');;
+        $name = $request->input('name');
+        $preparation_time = $request->input('preparation_time');
+        $cooking_time = $request->input('cooking_time');
+        $description = $request->input('description');
+
+        DB::update('UPDATE recipes SET name=?, preparation_time=?, cooking_time=?, description=?, updated_at = NOW() WHERE id=? AND user_id=?', [$name, $preparation_time, $cooking_time, $description, $recipeId, $userId]);
+
+        //If there are ingredients to update, update data in recipes_ingredients table
+        $ingredientsToUpdate = $request->input('ingredientsToUpdate');
+
+        if ($ingredientsToUpdate != null) {
+            for ($i = 0; $i < count($ingredientsToUpdate); $i++) {
+                $quantity = $ingredientsToUpdate[$i]['quantity'];
+                $ingredientId = $ingredientsToUpdate[$i]['ingredients_id'];
+
+                DB::update('UPDATE recipes_ingredients SET quantity=?  WHERE recipes_id=? AND ingredients_id=?', [$quantity, $recipeId, $ingredientId]);
+            }
+        }
+
+        //If there are ingredients to delete, delete ingredients from recipes_ingredients table
+        $ingredientsToDelete = $request->input('ingredientsToDelete');
+
+        if ($ingredientsToDelete != null) {
+            for ($i = 0; $i < count($ingredientsToDelete); $i++) {
+                $ingredientId = $ingredientsToDelete[$i]['ingredients_id'];
+
+                DB::delete('DELETE FROM recipes_ingredients WHERE recipes_id=? AND ingredients_id=?', [$recipeId, $ingredientId]);
+            }
+        }
+
+        //If user create new ingredients, send data to recipes_ingredients table
+        $ingredientsToAdd = $request->input('ingredientsToAdd');
+
+        if ($ingredientsToAdd != null) {
+            for ($i = 0; $i < count($ingredientsToAdd); $i++) {
+                $ingredientId = $ingredientsToAdd[$i]['ingredients_id'];
+                $quantity = $ingredientsToAdd[$i]['quantity'];
+
+                DB::insert('INSERT INTO recipes_ingredients SET ingredients_id=?, quantity=?, recipes_id=?', [$ingredientId, $quantity, $recipeId]);
+            }
+        }
+
+        return redirect()->route('recipes');
     }
 }

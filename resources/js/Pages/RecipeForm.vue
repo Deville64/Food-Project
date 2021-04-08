@@ -31,9 +31,7 @@
       </ul>
 
       <h2>Ingrédients:</h2>
-      <ul id="ingredients">
-        <AddIngredients />
-      </ul>
+      <AddIngredients />
 
       <h2>Préparation:</h2>
       <textarea
@@ -70,17 +68,15 @@ export default {
         description: "",
         recipes_ingredients: [],
       },
-      items: [],
-      dataIngredients: [],
     };
   },
 
   methods: {
     submit() {
-      const dropdownLength = document.getElementsByClassName("dropdown").length;
-      const dropdownIndex = dropdownLength - 1;
+      const dropdownToCreateLength = document.getElementsByClassName("dropdownToCreate").length;
+      const dropdownToCreateIndex = dropdownToCreateLength - 1;
 
-      for (let index = 0; index <= dropdownIndex; index++) {
+      for (let index = 0; index <= dropdownToCreateIndex; index++) {
         let getQuantity = document.getElementById("quantity" + index).value;
         let getIngredientId = document.getElementById("ingredientId" + index)
           .value;
