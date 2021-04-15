@@ -9,6 +9,7 @@ use App\Http\Controllers\RecipesController;
 use App\Http\Controllers\MyRecipeController;
 use App\Http\Controllers\ModifyMyRecipeController;
 use App\Http\Controllers\RecipeFormController;
+use App\Http\Controllers\FoodController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,5 +65,8 @@ Route::get('/modifymyrecipe/{id}', [ModifyMyRecipeController::class, 'create'])
 Route::post('/updateRecipe', [ModifyMyRecipeController::class, 'updateRecipe'])
     ->middleware(['auth', 'verified'])
     ->name('updateRecipe');
+
+Route::get('/getrecipesnames', [FoodController::class, 'getRecipesNames'])
+    ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

@@ -17025,12 +17025,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Components_TheHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/TheHeader */ "./resources/js/Components/TheHeader.vue");
 /* harmony import */ var _Components_TheFooter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/TheFooter */ "./resources/js/Components/TheFooter.vue");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     TheHeader: _Components_TheHeader__WEBPACK_IMPORTED_MODULE_0__.default,
     TheFooter: _Components_TheFooter__WEBPACK_IMPORTED_MODULE_1__.default
+  },
+  data: function data() {
+    return {
+      recipes: []
+    };
   },
   mounted: function mounted() {
     //Use the food ID in local Storage to show main info in food page
@@ -17085,6 +17096,37 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     xhr.send(); //Sends request to server
+  },
+  methods: {
+    showRecipes: function showRecipes() {
+      var vm = this;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", "http://127.0.0.1:8000/getrecipesnames");
+
+      xmlhttp.onload = function () {
+        var recipes = JSON.parse(xmlhttp.responseText);
+
+        var _iterator = _createForOfIteratorHelper(recipes),
+            _step;
+
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var recipe = _step.value;
+            //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
+            var element = {};
+            element.id = recipe["id"];
+            element.name = recipe["name"];
+            vm.recipes.push(element);
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+      };
+
+      xmlhttp.send();
+    }
   }
 });
 
@@ -18738,15 +18780,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _hoisted_1 = {
+  id: "food",
+  "class": "wrapper"
+};
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<main id=\"food\" class=\"wrapper\"><div id=\"Wrap\"><h1 id=\"foodName\"></h1><img id=\"picFood\" src=\"\" alt=\"\"><h2>Informations nutritionnelles</h2><img id=\"imgNutriscore\" src=\"\" alt=\"\"><h2>Repères nutritionnels pour 100 g</h2><ul><li><span id=\"fat\"></span>g</li><li><span id=\"saturatedFat\"></span>g</li><li><span id=\"sugar\"></span>g</li><li><span id=\"salt\"></span>g</li></ul></div><div id=\"wrap1\"><h2>Ingrédients:</h2><p id=\"ingredients\"></p><h2>Additifs:</h2><ul id=\"additives\"></ul><h2>Groupe Nova</h2><img id=\"imgNova\" src=\"\" alt=\"\"><input type=\"button\" value=\"Ajouter à ma recette\"></div></main>", 1);
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div id=\"Wrap\"><h1 id=\"foodName\"></h1><img id=\"picFood\" src=\"\" alt=\"\"><h2>Informations nutritionnelles</h2><img id=\"imgNutriscore\" src=\"\" alt=\"\"><h2>Repères nutritionnels pour 100 g</h2><ul><li><span id=\"fat\"></span>g</li><li><span id=\"saturatedFat\"></span>g</li><li><span id=\"sugar\"></span>g</li><li><span id=\"salt\"></span>g</li></ul></div>", 1);
+
+var _hoisted_3 = {
+  id: "wrap1"
+};
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Ingrédients:", -1
+/* HOISTED */
+);
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  id: "ingredients"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Additifs:", -1
+/* HOISTED */
+);
+
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", {
+  id: "additives"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, "Groupe Nova", -1
+/* HOISTED */
+);
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  id: "imgNova",
+  src: "",
+  alt: ""
+}, null, -1
+/* HOISTED */
+);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_TheHeader = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TheHeader");
 
   var _component_TheFooter = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TheFooter");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheHeader), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, _hoisted_5, _hoisted_6, _hoisted_7, _hoisted_8, _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    type: "button",
+    value: "Ajouter à ma recette",
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.showRecipes && $options.showRecipes.apply($options, arguments);
+    })
+  }), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.recipes, function (recipe, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
+      key: index
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+      id: 'recipename' + index
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipe.name), 9
+    /* TEXT, PROPS */
+    , ["id"])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
   /* STABLE_FRAGMENT */
   );
 }
