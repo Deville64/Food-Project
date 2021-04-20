@@ -69,4 +69,8 @@ Route::post('/updateRecipe', [ModifyMyRecipeController::class, 'updateRecipe'])
 Route::get('/getrecipesnames', [FoodController::class, 'getRecipesNames'])
     ->middleware(['auth', 'verified']);
 
+Route::post('/food', [FoodController::class, 'addApiIngredient'])
+    ->middleware(['auth', 'verified'])
+    ->name('addApiIngredient');;
+
 require __DIR__ . '/auth.php';

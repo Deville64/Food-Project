@@ -27,10 +27,7 @@
       <h2>Groupe Nova</h2>
       <img id="imgNova" src="" alt="" />
 
-      <input type="button" value="Ajouter à ma recette" @click="showRecipes" />
-      <ul v-for="(recipe, index) in recipes" :key="index">
-        <li :id="'recipename' + index">{{ recipe.name }}</li>
-      </ul>
+      <AddApiIngredient />
     </div>
   </main>
   <TheFooter />
@@ -38,16 +35,13 @@
 
 <script>
 import TheHeader from "@/Components/TheHeader";
+import AddApiIngredient from "@/Components/AddApiIngredient";
 import TheFooter from "@/Components/TheFooter";
 export default {
   components: {
     TheHeader,
+    AddApiIngredient,
     TheFooter,
-  },
-  data() {
-    return {
-      recipes: [],
-    };
   },
   mounted() {
     //Use the food ID in local Storage to show main info in food page
@@ -111,24 +105,6 @@ export default {
       document.getElementById("ingredients").innerText = ingredients;
     };
     xhr.send(); //Sends request to server
-  },
-  methods: {
-    showRecipes() {
-      const vm = this;
-      let xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("GET", "http://127.0.0.1:8000/getrecipesnames");
-      xmlhttp.onload = function () {
-        const recipes = JSON.parse(xmlhttp.responseText);
-        for (let recipe of recipes) {
-          //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
-          let element = {};
-          element.id = recipe["id"];
-          element.name = recipe["name"];
-          vm.recipes.push(element);
-        }
-      };
-      xmlhttp.send();
-    },
   },
 };
 </script>

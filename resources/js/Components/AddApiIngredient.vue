@@ -1,0 +1,67 @@
+<template>
+  <input type="button" value="Ajouter à ma recette" @click="showRecipes" />
+  <ul>
+    <li
+      v-for="(recipe, index) in recipes"
+      :key="index"
+      :id="'recipename' + index"
+    >
+      <span @click="addIngredient(index)">{{ recipe.name }}</span>
+      <span :id="'idRecipe' + index" style="display: none">{{
+        recipe.id
+      }}</span>
+    </li>
+  </ul>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      recipes: [],
+      form: {
+        name_api: "",
+        recipe_id: "",
+        id_api: "",
+      },
+    };
+  },
+  methods: {
+    showRecipes() {
+      const vm = this;
+      let xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", "http://127.0.0.1:8000/getrecipesnames");
+      xmlhttp.onload = function () {
+        const recipes = JSON.parse(xmlhttp.responseText);
+        for (let recipe of recipes) {
+          //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
+          let element = {};
+          element.id = recipe["id"];
+          element.name = recipe["name"];
+          vm.recipes.push(element);
+        }
+      };
+      xmlhttp.send();
+    },
+    addIngredient(index) {
+      const getIdRecipe = document.getElementById("idRecipe" + index).innerText;
+      const objIdRecipe = { recipe_id: getIdRecipe };
+      Object.assign(this.form, objIdRecipe);
+
+      const foodIdAPI = sessionStorage.getItem("foodID");
+      const objFoodIdApi = { id_api: foodIdAPI };
+      Object.assign(this.form, objFoodIdApi);
+
+      const getFoodName = document.getElementById("foodName").innerText;
+      const objFoodName = { name_api: getFoodName };
+      Object.assign(this.form, objFoodName);
+
+      console.log(this.form);
+      console.log(this.form.recipe_id);
+      console.log(this.form.id_api);
+      console.log(this.form.name_api);
+      this.$inertia.post(this.route("addApiIngredient", this.form));
+    },
+  },
+};
+</script>
