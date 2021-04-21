@@ -16,7 +16,7 @@ class RecipeFormController extends Controller
 
     public function ingredients()
     {
-        $results = DB::select('SELECT id, name FROM ingredients');
+        $results = DB::select('SELECT id, name FROM ingredients WHERE id_api IS NULL');
 
         return response()->json($results);
     }

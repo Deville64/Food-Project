@@ -54,13 +54,15 @@ Route::post('/recipeform', [RecipeFormController::class, 'createRecipe'])
     ->name('createRecipe');
 
 Route::get('/myrecipe/{id}', [MyRecipeController::class, 'create'])
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified'])
+    ;
 
 Route::get('/deletemyrecipe/{id}', [MyRecipeController::class, 'deleteRecepe'])
     ->middleware(['auth', 'verified']);
 
 Route::get('/modifymyrecipe/{id}', [ModifyMyRecipeController::class, 'create'])
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified'])
+    ->name('modifymyrecipe');
 
 Route::post('/updateRecipe', [ModifyMyRecipeController::class, 'updateRecipe'])
     ->middleware(['auth', 'verified'])
