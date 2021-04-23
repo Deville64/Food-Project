@@ -27,7 +27,8 @@
       <h2>Groupe Nova</h2>
       <img id="imgNova" src="" alt="" />
 
-      <AddApiIngredient />
+      <AddApiIngredient v-if="$page.props.auth.user" />
+      <inertia-link href="register" v-else >Ajouter à ma recette</inertia-link>
     </div>
   </main>
   <TheFooter />

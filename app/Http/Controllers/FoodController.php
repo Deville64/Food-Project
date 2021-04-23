@@ -33,7 +33,10 @@ class FoodController extends Controller
         //If id_api doesn't exist in db, add it in ingredients table and recipe then, redirect to modify recipe page
         else {
             $name_api = $request->input('name_api');
-            DB::insert('INSERT INTO ingredients SET name=?, id_api=?, created_at= NOW(), updated_at = NOW()',  [$name_api, $id_api]);
+            $picture = $request->input('picture');
+            $nutriscore = $request->input('nutriscore');
+
+            DB::insert('INSERT INTO ingredients SET name=?, id_api=?, picture=?, nutriscore=?, created_at= NOW(), updated_at = NOW()',  [$name_api, $id_api, $picture, $nutriscore]);
             $ingredient_id = DB::getPdo()->lastInsertId();
 
             DB::insert('INSERT INTO recipes_ingredients SET ingredients_id=?, recipes_id=?, quantity=0',  [$ingredient_id, $recipe_id]);

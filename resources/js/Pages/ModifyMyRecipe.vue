@@ -9,12 +9,40 @@
       </ul>
       <ul class="dropdownToUpdate">
         <li
+          v-for="(api, index) in ingredientsApi"
+          :key="index"
+          :id="'updateIngredient' + index"
+        >
+          <img
+            :src="
+              'https://static.openfoodfacts.org/images/products/' + api.picture
+            "
+            alt=""
+          />
+          {{ api.name }}
+          <span style="display: none" :id="'ingredientId' + index">{{
+            api.id
+          }}</span>
+          <input type="text" :id="'quantity' + index" v-model="api.quantity" />
+          <img
+            :src="
+              'https://static.openfoodfacts.org/images/misc/nutriscore-' +
+              api.nutriscore +
+              '.svg'
+            "
+            alt=""
+          />
+          <input type="button" value="X" @click="deleteIngredient(index)" />
+        </li>
+        <li
           v-for="(ingredient, index) in ingredients"
           :key="index"
           :id="'updateIngredient' + index"
         >
           {{ ingredient.name }}
-          <span style="display: none" :id="'ingredientId' + index">{{ ingredient.id }}</span>
+          <span style="display: none" :id="'ingredientId' + index">{{
+            ingredient.id
+          }}</span>
           <input
             type="text"
             :id="'quantity' + index"
@@ -44,6 +72,7 @@ export default {
   props: {
     recipe: Object,
     ingredients: Object,
+    ingredientsApi: Object,
   },
   data() {
     return {
@@ -70,8 +99,10 @@ export default {
       myLi.remove();
       console.log(this.form.ingredientsToDelete);
     },
-    submit(id) {
-      const dropdownToUpdateLength = document.getElementsByClassName("dropdownToUpdate").length;
+    submit() {
+      const dropdownToUpdateLength = document.getElementsByClassName(
+        "dropdownToUpdate"
+      ).length;
       const dropdownToUpdateIndex = dropdownToUpdateLength - 1;
 
       if (dropdownToUpdateIndex != 0) {
@@ -86,7 +117,9 @@ export default {
         }
       }
 
-      const dropdownToCreateLength = document.getElementsByClassName("dropdownToCreate").length;
+      const dropdownToCreateLength = document.getElementsByClassName(
+        "dropdownToCreate"
+      ).length;
       const dropdownToCreateIndex = dropdownToCreateLength - 1;
 
       for (let index = 0; index <= dropdownToCreateIndex; index++) {

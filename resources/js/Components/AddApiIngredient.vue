@@ -23,6 +23,8 @@ export default {
         name_api: "",
         recipe_id: "",
         id_api: "",
+        picture: "",
+        nutriscore: "",
       },
     };
   },
@@ -56,10 +58,22 @@ export default {
       const objFoodName = { name_api: getFoodName };
       Object.assign(this.form, objFoodName);
 
+      const getPicture = document.getElementById("picFood").src;
+      const picture = getPicture.substring(49)
+      const objPicture = { picture: picture };
+      Object.assign(this.form, objPicture);
+
+      const getNutriscore = document.getElementById("imgNutriscore").src;
+      const nutriscore = getNutriscore.substring(56,57)
+      const objNutriscore = { nutriscore: nutriscore };
+      Object.assign(this.form, objNutriscore);
+
       console.log(this.form);
       console.log(this.form.recipe_id);
       console.log(this.form.id_api);
       console.log(this.form.name_api);
+      console.log(this.form.picture);
+      console.log(this.form.nutriscore);
       this.$inertia.post(this.route("addApiIngredient", this.form));
     },
   },

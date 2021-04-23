@@ -19,23 +19,37 @@ class MyRecipeController extends Controller
             $recipe = DB::select('SELECT * FROM recipes WHERE id = ? AND user_id =?', [$id, $userId]);
 
             $recipesIngredients = DB::select('SELECT ingredients_id, quantity FROM recipes_ingredients WHERE recipes_id = ?', [$id]);
+            
             $ingredientsData = array();
+            $ingredientsApiData = array();
 
             foreach ($recipesIngredients as $recipeIngredient) {
                 $ingredientId = $recipeIngredient->ingredients_id;
                 $ingredientQuantity = $recipeIngredient->quantity;
-                $ingredients = DB::select('SELECT name FROM ingredients WHERE id = ?', [$ingredientId]);
+                $ingredients = DB::select('SELECT name FROM ingredients WHERE id = ? AND id_api IS NULL', [$ingredientId]);
+                $ingredientsApi = DB::select('SELECT name, id_api, picture, nutriscore FROM ingredients WHERE id = ? AND id_api IS NOT NULL', [$ingredientId]);
 
                 foreach ($ingredients as $ingredient) {
                     $ingredientName = $ingredient->name;
-                    $test = array('name' => $ingredientName, 'quantity' => $ingredientQuantity);
-                    json_encode($test);
-                    $ingredientsData[] = $test;
+                    $data = array('name' => $ingredientName, 'quantity' => $ingredientQuantity);
+                    json_encode($data);
+                    $ingredientsData[] = $data;
+                }
+
+                foreach ($ingredientsApi as $ingredientApi) {
+                    $ingredientId = $ingredientApi->id_api;
+                    $ingredientPicture = $ingredientApi->picture; 
+                    $ingredientName = $ingredientApi->name; 
+                    $ingredientNutriscore = $ingredientApi->nutriscore; 
+                    $data = array('id' => $ingredientId, 'picture' => $ingredientPicture, 'name' => $ingredientName, 'quantity' => $ingredientQuantity, 'nutriscore' => $ingredientNutriscore);
+                    json_encode($data);
+                    $ingredientsApiData[] = $data;
                 }
             }
             return Inertia::render('MyRecipe', [
                 'recipe' => $recipe,
-                'ingredients' => $ingredientsData
+                'ingredients' => $ingredientsData,
+                'ingredientsApi' => $ingredientsApiData,
             ]);
         } else {
             abort(404);

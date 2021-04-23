@@ -7,6 +7,24 @@
       <li>{{ myrecipe.cooking_time }}</li>
     </ul>
     <ul>
+      <li v-for="api in ingredientsApi" :key="api">
+        <img
+          :src="
+            'https://static.openfoodfacts.org/images/products/' + api.picture
+          "
+          alt=""
+        />
+        {{ api.name }}
+        {{ api.quantity }}
+        <img
+          :src="
+            'https://static.openfoodfacts.org/images/misc/nutriscore-' +
+            api.nutriscore +
+            '.svg'
+          "
+          alt=""
+        />
+      </li>
       <li v-for="ingredient in ingredients" :key="ingredient">
         {{ ingredient.name }}
         {{ ingredient.quantity }}
@@ -19,7 +37,6 @@
     <inertia-link type="button" :href="'/deletemyrecipe/' + myrecipe.id"
       >Supprimer ma recette</inertia-link
     >
-    <!-- <input type="button" value="Supprimer ma recette"  @click="deleteRecipe(myrecipe.id)"/> -->
   </main>
   <TheFooter />
 </template>
@@ -36,6 +53,7 @@ export default {
   props: {
     recipe: Object,
     ingredients: Object,
+    ingredientsApi: Object,
   },
   methods: {
     deleteRecipe(id) {
