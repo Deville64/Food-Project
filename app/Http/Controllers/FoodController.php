@@ -26,8 +26,8 @@ class FoodController extends Controller
         //If id_api exist in db, add it to the recipe and redirect to modify recipe page
         if (DB::table('ingredients')->where('id_api', $id_api)->first()) {
             $ingredient_id = DB::select('SELECT id FROM ingredients WHERE id_api = ?', [$id_api]);
-
-            DB::insert('INSERT INTO recipes_ingredients SET ingredients_id=?, recipes_id=?, quantity=0',  [$ingredient_id, $recipe_id]);
+            $id = $ingredient_id[0]->id;
+            DB::insert('INSERT INTO recipes_ingredients SET ingredients_id=?, recipes_id=?, quantity=0',  [$id, $recipe_id]);
             return redirect()->route('modifymyrecipe', ['id' => $recipe_id]);
         }
         //If id_api doesn't exist in db, add it in ingredients table and recipe then, redirect to modify recipe page

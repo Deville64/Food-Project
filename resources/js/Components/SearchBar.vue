@@ -17,7 +17,6 @@
 export default {
   methods: {
     searchFood() {
-      const vm = this;
       const xhr = new XMLHttpRequest(); // Creating the XMLHttpRequest object
       const text = document.getElementById("search").value; //Take text from search bar
       const url ="https://fr.openfoodfacts.org/cgi/search.pl?search_simple=1&action=process&json=true&search_terms=" + text;

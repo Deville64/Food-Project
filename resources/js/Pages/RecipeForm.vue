@@ -77,9 +77,9 @@ export default {
       const dropdownToCreateIndex = dropdownToCreateLength - 1;
 
       for (let index = 0; index <= dropdownToCreateIndex; index++) {
-        let getQuantity = document.getElementById("quantity" + index).value;
-        let getIngredientId = document.getElementById("ingredientId" + index)
-          .value;
+        let getIngredientId = document.getElementById("ingredientId" + index).value;
+        let getQuantity = document.getElementById("createdQuantity" + index).value;
+          
         this.form.recipes_ingredients.push({
           ingredients_id: getIngredientId,
           quantity: getQuantity,

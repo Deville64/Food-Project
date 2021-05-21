@@ -20,7 +20,7 @@ class ModifyMyRecipeController extends Controller
             $recipe = DB::select('SELECT * FROM recipes WHERE id = ? AND user_id =?', [$id, $userId]);
 
             $recipesIngredients = DB::select('SELECT ingredients_id, quantity FROM recipes_ingredients WHERE recipes_id = ?', [$id]);
-            
+
             $ingredientsData = array();
             $ingredientsApiData = array();
 
@@ -38,7 +38,7 @@ class ModifyMyRecipeController extends Controller
                 }
 
                 foreach ($ingredientsApi as $ingredientApi) {
-                    $ingredientId = $ingredientApi->id_api;
+                    $ingredientId = $recipeIngredient->ingredients_id;
                     $ingredientPicture = $ingredientApi->picture;
                     $ingredientName = $ingredientApi->name;
                     $ingredientNutriscore = $ingredientApi->nutriscore;
@@ -70,16 +70,14 @@ class ModifyMyRecipeController extends Controller
 
         DB::update('UPDATE recipes SET name=?, preparation_time=?, cooking_time=?, description=?, updated_at = NOW() WHERE id=? AND user_id=?', [$name, $preparation_time, $cooking_time, $description, $recipeId, $userId]);
 
-        //If there are ingredients to update, update data in recipes_ingredients table
+        ///Update data in recipes_ingredients table
         $ingredientsToUpdate = $request->input('ingredientsToUpdate');
 
-        if ($ingredientsToUpdate != null) {
-            for ($i = 0; $i < count($ingredientsToUpdate); $i++) {
-                $quantity = $ingredientsToUpdate[$i]['quantity'];
-                $ingredientId = $ingredientsToUpdate[$i]['ingredients_id'];
+        for ($i = 0; $i < count($ingredientsToUpdate); $i++) {
+            $quantity = $ingredientsToUpdate[$i]['quantity'];
+            $ingredientId = $ingredientsToUpdate[$i]['ingredients_id'];
 
-                DB::update('UPDATE recipes_ingredients SET quantity=?  WHERE recipes_id=? AND ingredients_id=?', [$quantity, $recipeId, $ingredientId]);
-            }
+            DB::update('UPDATE recipes_ingredients SET quantity=?  WHERE recipes_id=? AND ingredients_id=?', [$quantity, $recipeId, $ingredientId]);
         }
 
         //If there are ingredients to delete, delete ingredients from recipes_ingredients table

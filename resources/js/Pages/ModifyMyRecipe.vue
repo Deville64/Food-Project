@@ -7,7 +7,7 @@
         <li><input type="text" v-model="form.preparation_time" /></li>
         <li><input type="text" v-model="form.cooking_time" /></li>
       </ul>
-      <ul class="dropdownToUpdate">
+      <ul id="dropdownToUpdate">
         <li
           v-for="(api, index) in ingredientsApi"
           :key="index"
@@ -97,33 +97,30 @@ export default {
       });
       const myLi = document.getElementById("updateIngredient" + index);
       myLi.remove();
-      console.log(this.form.ingredientsToDelete);
     },
     submit() {
-      const dropdownToUpdateLength = document.getElementsByClassName(
-        "dropdownToUpdate"
-      ).length;
-      const dropdownToUpdateIndex = dropdownToUpdateLength - 1;
+      //Send to the form updated data
+      const dropdownToUpdateLength = document.getElementById("dropdownToUpdate")
+        .childElementCount;
 
-      if (dropdownToUpdateIndex != 0) {
-        for (let index = 0; index <= dropdownToUpdateIndex; index++) {
-          let getQuantity = document.getElementById("quantity" + index).value;
-          let getIngredientId = document.getElementById("ingredientId" + index)
-            .innerText;
-          this.form.ingredientsToUpdate.push({
-            ingredients_id: getIngredientId,
-            quantity: getQuantity,
-          });
-        }
+      for (let index = 0; index <= dropdownToUpdateLength - 1; index++) {
+        let getQuantity = document.getElementById("quantity" + index).value;
+        let getIngredientId = document.getElementById("ingredientId" + index)
+          .innerText;
+        this.form.ingredientsToUpdate.push({
+          ingredients_id: getIngredientId,
+          quantity: getQuantity,
+        });
       }
 
+      //Add new ingredients to the form
       const dropdownToCreateLength = document.getElementsByClassName(
         "dropdownToCreate"
       ).length;
-      const dropdownToCreateIndex = dropdownToCreateLength - 1;
 
-      for (let index = 0; index <= dropdownToCreateIndex; index++) {
-        let getQuantity = document.getElementById("quantity" + index).value;
+      for (let index = 0; index <= dropdownToCreateLength - 1; index++) {
+        let getQuantity = document.getElementById("createdQuantity" + index)
+          .value;
         let getIngredientId = document.getElementById("ingredientId" + index)
           .value;
         this.form.ingredientsToAdd.push({

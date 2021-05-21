@@ -10,7 +10,7 @@
       <p>Ajouter un ingrédient</p>
     </li>
 
-    <li v-for="(item, index) in items" :key="index" :id="'li' + index">
+    <li v-for="(item, index) in ingredientNumber" :key="index" :id="'li' + index">
       <input
         type="text"
         :id="'ingredient' + index"
@@ -20,7 +20,11 @@
         autocomplete="off"
       />
 
-      <ul class="dropdownToCreate" :id="'dropdown' + index" style="display: none">
+      <ul
+        class="dropdownToCreate"
+        :id="'dropdown' + index"
+        style="display: none"
+      >
         <li
           v-for="ingredient in dataIngredients"
           :key="ingredient.name"
@@ -33,7 +37,7 @@
       <input :id="'ingredientId' + index" type="text" style="display: none" />
       <input
         type="text"
-        :id="'quantity' + index"
+        :id="'createdQuantity' + index"
         className="quantity"
         placeholder="Choisir une quantité"
         autocomplete="off"
@@ -55,19 +59,25 @@ export default {
 
   data() {
     return {
-      items: [],
+      ingredientNumber: [],
       dataIngredients: [],
+      checkDataName: [],
     };
   },
 
   methods: {
+    createIngredient() {
+      let index = 1;
+      this.ingredientNumber.push(index);
+    },
     deleteIngredient(index) {
+      let getinputName = document.getElementById("ingredient" + index);
+      let name = getinputName.value;
+      let number = this.checkDataName.indexOf(name);
+      this.checkDataName.splice(number, 1);
+
       const myLi = document.getElementById("li" + index);
       myLi.remove();
-    },
-    createIngredient() {
-      let index = 0;
-      this.items.push(index++);
     },
     selectHint(index, ingredientId) {
       const dropdown = document.getElementById("dropdown" + index);
@@ -79,6 +89,11 @@ export default {
       giveInputId.value = ingredientId;
 
       dropdown.style.display = "none";
+
+      const vm = this;
+      vm.checkDataName.push(giveInputName.value);
+      giveInputName.setAttribute("readonly", "readonly");
+      console.log(vm.checkDataName);
     },
     showHint(id) {
       const vm = this;
@@ -99,28 +114,31 @@ export default {
           const ingredients = JSON.parse(xmlhttp.responseText);
           let index = 0;
           for (let ingredient of ingredients) {
-            //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
+            //Check if data input with lower case and no accent match
+            //with ingredients from DB with lower case and no accent  
+            //& display max 3 ingredients & not display ingredient that 
+            //is already selected previously
             if (
               text
                 .toLowerCase()
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
                 .substr(0, text.length) ==
-              ingredient["name"]
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .substr(0, text.length)
+                ingredient["name"]
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .substr(0, text.length) &&
+              index < 3 &&
+              !vm.checkDataName.includes(ingredient["name"])
             ) {
-              if (index < 3) {
-                index++;
-                dropdown.style.display = "block";
+              index++;
+              dropdown.style.display = "block";
 
-                let element = {};
-                element.id = ingredient["id"];
-                element.name = ingredient["name"];
-                vm.dataIngredients.push(element);
-              }
+              let element = {};
+              element.id = ingredient["id"];
+              element.name = ingredient["name"];
+              vm.dataIngredients.push(element);
             }
           }
         };

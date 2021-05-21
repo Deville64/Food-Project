@@ -19,13 +19,7 @@ export default {
   data() {
     return {
       recipes: [],
-      form: {
-        name_api: "",
-        recipe_id: "",
-        id_api: "",
-        picture: "",
-        nutriscore: "",
-      },
+      form: {},
     };
   },
   methods: {
@@ -68,12 +62,6 @@ export default {
       const objNutriscore = { nutriscore: nutriscore };
       Object.assign(this.form, objNutriscore);
 
-      console.log(this.form);
-      console.log(this.form.recipe_id);
-      console.log(this.form.id_api);
-      console.log(this.form.name_api);
-      console.log(this.form.picture);
-      console.log(this.form.nutriscore);
       this.$inertia.post(this.route("addApiIngredient", this.form));
     },
   },

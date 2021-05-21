@@ -16433,13 +16433,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   data: function data() {
     return {
       recipes: [],
-      form: {
-        name_api: "",
-        recipe_id: "",
-        id_api: "",
-        picture: "",
-        nutriscore: ""
-      }
+      form: {}
     };
   },
   methods: {
@@ -16500,12 +16494,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         nutriscore: nutriscore
       };
       Object.assign(this.form, objNutriscore);
-      console.log(this.form);
-      console.log(this.form.recipe_id);
-      console.log(this.form.id_api);
-      console.log(this.form.name_api);
-      console.log(this.form.picture);
-      console.log(this.form.nutriscore);
       this.$inertia.post(this.route("addApiIngredient", this.form));
     }
   }
@@ -16541,18 +16529,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   data: function data() {
     return {
-      items: [],
-      dataIngredients: []
+      ingredientNumber: [],
+      dataIngredients: [],
+      checkDataName: []
     };
   },
   methods: {
+    createIngredient: function createIngredient() {
+      var index = 1;
+      this.ingredientNumber.push(index);
+    },
     deleteIngredient: function deleteIngredient(index) {
+      var getinputName = document.getElementById("ingredient" + index);
+      var name = getinputName.value;
+      var number = this.checkDataName.indexOf(name);
+      this.checkDataName.splice(number, 1);
       var myLi = document.getElementById("li" + index);
       myLi.remove();
-    },
-    createIngredient: function createIngredient() {
-      var index = 0;
-      this.items.push(index++);
     },
     selectHint: function selectHint(index, ingredientId) {
       var dropdown = document.getElementById("dropdown" + index);
@@ -16562,6 +16555,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       giveInputName.value = getHint.innerHTML;
       giveInputId.value = ingredientId;
       dropdown.style.display = "none";
+      var vm = this;
+      vm.checkDataName.push(giveInputName.value);
+      giveInputName.setAttribute("readonly", "readonly");
+      console.log(vm.checkDataName);
     },
     showHint: function showHint(id) {
       var vm = this;
@@ -16589,16 +16586,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             for (_iterator.s(); !(_step = _iterator.n()).done;) {
               var ingredient = _step.value;
 
-              //Check if input with lower case and no accent match with ingredients from DB with lower case and no accent
-              if (text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length) == ingredient["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length)) {
-                if (index < 3) {
-                  index++;
-                  dropdown.style.display = "block";
-                  var element = {};
-                  element.id = ingredient["id"];
-                  element.name = ingredient["name"];
-                  vm.dataIngredients.push(element);
-                }
+              //Check if data input with lower case and no accent match
+              //with ingredients from DB with lower case and no accent  
+              //& display max 3 ingredients & not display ingredient that 
+              //is already selected previously
+              if (text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length) == ingredient["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").substr(0, text.length) && index < 3 && !vm.checkDataName.includes(ingredient["name"])) {
+                index++;
+                dropdown.style.display = "block";
+                var element = {};
+                element.id = ingredient["id"];
+                element.name = ingredient["name"];
+                vm.dataIngredients.push(element);
               }
             }
           } catch (err) {
@@ -17271,28 +17269,25 @@ __webpack_require__.r(__webpack_exports__);
       });
       var myLi = document.getElementById("updateIngredient" + index);
       myLi.remove();
-      console.log(this.form.ingredientsToDelete);
     },
     submit: function submit() {
-      var dropdownToUpdateLength = document.getElementsByClassName("dropdownToUpdate").length;
-      var dropdownToUpdateIndex = dropdownToUpdateLength - 1;
+      //Send to the form updated data
+      var dropdownToUpdateLength = document.getElementById("dropdownToUpdate").childElementCount;
 
-      if (dropdownToUpdateIndex != 0) {
-        for (var index = 0; index <= dropdownToUpdateIndex; index++) {
-          var getQuantity = document.getElementById("quantity" + index).value;
-          var getIngredientId = document.getElementById("ingredientId" + index).innerText;
-          this.form.ingredientsToUpdate.push({
-            ingredients_id: getIngredientId,
-            quantity: getQuantity
-          });
-        }
-      }
+      for (var index = 0; index <= dropdownToUpdateLength - 1; index++) {
+        var getQuantity = document.getElementById("quantity" + index).value;
+        var getIngredientId = document.getElementById("ingredientId" + index).innerText;
+        this.form.ingredientsToUpdate.push({
+          ingredients_id: getIngredientId,
+          quantity: getQuantity
+        });
+      } //Add new ingredients to the form
+
 
       var dropdownToCreateLength = document.getElementsByClassName("dropdownToCreate").length;
-      var dropdownToCreateIndex = dropdownToCreateLength - 1;
 
-      for (var _index = 0; _index <= dropdownToCreateIndex; _index++) {
-        var _getQuantity = document.getElementById("quantity" + _index).value;
+      for (var _index = 0; _index <= dropdownToCreateLength - 1; _index++) {
+        var _getQuantity = document.getElementById("createdQuantity" + _index).value;
         var _getIngredientId = document.getElementById("ingredientId" + _index).value;
         this.form.ingredientsToAdd.push({
           ingredients_id: _getIngredientId,
@@ -17420,8 +17415,8 @@ __webpack_require__.r(__webpack_exports__);
       var dropdownToCreateIndex = dropdownToCreateLength - 1;
 
       for (var index = 0; index <= dropdownToCreateIndex; index++) {
-        var getQuantity = document.getElementById("quantity" + index).value;
         var getIngredientId = document.getElementById("ingredientId" + index).value;
+        var getQuantity = document.getElementById("createdQuantity" + index).value;
         this.form.recipes_ingredients.push({
           ingredients_id: getIngredientId,
           quantity: getQuantity
@@ -17529,7 +17524,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   methods: {
     searchFood: function searchFood() {
-      var vm = this;
       var xhr = new XMLHttpRequest(); // Creating the XMLHttpRequest object
 
       var text = document.getElementById("search").value; //Take text from search bar
@@ -17705,7 +17699,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return $options.createIngredient();
     })
-  }), _hoisted_1]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.items, function (item, index) {
+  }), _hoisted_1]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ingredientNumber, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       key: index,
       id: 'li' + index
@@ -17750,7 +17744,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS */
     , ["id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
       type: "text",
-      id: 'quantity' + index,
+      id: 'createdQuantity' + index,
       className: "quantity",
       placeholder: "Choisir une quantité",
       autocomplete: "off"
@@ -19033,7 +19027,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "dropdownToUpdate"
+  id: "dropdownToUpdate"
 };
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
