@@ -45,12 +45,16 @@ export default {
   justify-content: center;
   font-size: 28px;
   font-weight: 600;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 #home ul {
   display: flex;
-  margin-top: 24px;
+  margin-top: 20px;
+
+    @media (max-width: 871px) {
+    display: block;
+  }
 }
 
 #home ul li {
@@ -61,5 +65,7 @@ export default {
 }
 #home ul li p {
   line-height: 20px;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 </style>

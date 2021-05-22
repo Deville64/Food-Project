@@ -1,5 +1,10 @@
 <template>
-  <input type="button" value="Ajouter à ma recette" @click="showRecipes" />
+  <input
+    id="button"
+    type="button"
+    value="Ajouter à ma recette"
+    @click="showRecipes"
+  />
   <ul>
     <li
       v-for="(recipe, index) in recipes"
@@ -53,12 +58,12 @@ export default {
       Object.assign(this.form, objFoodName);
 
       const getPicture = document.getElementById("picFood").src;
-      const picture = getPicture.substring(49)
+      const picture = getPicture.substring(49);
       const objPicture = { picture: picture };
       Object.assign(this.form, objPicture);
 
       const getNutriscore = document.getElementById("imgNutriscore").src;
-      const nutriscore = getNutriscore.substring(56,57)
+      const nutriscore = getNutriscore.substring(56, 57);
       const objNutriscore = { nutriscore: nutriscore };
       Object.assign(this.form, objNutriscore);
 
@@ -67,3 +72,31 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+ul {
+  background-color: #ededed;
+  width: 150px;
+  margin-top: 10px;
+  box-shadow: 10px 10px 5px gray;
+}
+
+li:first-child {
+  padding-top: 5px;
+}
+
+li {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+li:hover{
+  color: white;
+  background-color: #48bc8b;
+}
+
+span{
+  cursor: pointer;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
   <TheHeader />
   <main id="food" class="wrapper">
-    <div id="Wrap">
+    <div id="wrap">
       <h1 id="foodName"></h1>
       <img id="picFood" src="" alt="" />
 
@@ -10,10 +10,12 @@
 
       <h2>Repères nutritionnels pour 100 g</h2>
       <ul>
-        <li><span id="fat"></span>g</li>
-        <li><span id="saturatedFat"></span>g</li>
-        <li><span id="sugar"></span>g</li>
-        <li><span id="salt"></span>g</li>
+        <li><span id="energy"></span>kJ</li>
+        <li><span id="fat"></span>g de matières grasses dont</li>
+        <li><span id="saturatedFat"></span>g de gras saturés</li>
+        <li><span id="protein"></span>g de protéines</li>
+        <li><span id="sugar"></span>g de glucides</li>
+        <li><span id="salt"></span>g de sel</li>
       </ul>
     </div>
 
@@ -28,7 +30,7 @@
       <img id="imgNova" src="" alt="" />
 
       <AddApiIngredient v-if="$page.props.auth.user" />
-      <inertia-link href="register" v-else >Ajouter à ma recette</inertia-link>
+      <inertia-link id="button" href="register" as="button" v-else>Ajouter à ma recette</inertia-link>
     </div>
   </main>
   <TheFooter />
@@ -70,8 +72,10 @@ export default {
         nova +
         ".svg";
       const ingredients = product.ingredients_text;
+      const energy = product.nutriments.energy;
       const fat = product.nutriments.fat_100g;
       const saturatedFat = product.nutriscore_data.saturated_fat_value;
+      const protein = product.nutriments.proteins_100g;
       const sugar = product.nutriments.sugars_100g;
       const salt = product.nutriments.salt_100g;
 
@@ -99,8 +103,10 @@ export default {
       }
       document.getElementById("foodName").innerText = foodName;
       document.getElementById("picFood").src = picFood;
+      document.getElementById("energy").innerText = energy;
       document.getElementById("fat").innerText = fat;
       document.getElementById("saturatedFat").innerText = saturatedFat;
+      document.getElementById("protein").innerText = protein;
       document.getElementById("sugar").innerText = sugar;
       document.getElementById("salt").innerText = salt;
       document.getElementById("ingredients").innerText = ingredients;
@@ -109,3 +115,48 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#wrap,
+#wrap1 {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  @media (max-width: 871px) {
+    width: 100%;
+  }
+}
+
+#foodName {
+  font-size: 22px;
+  font-weight: 600;
+  width: 90%;
+}
+#picFood {
+  max-height: 300px;
+}
+
+h2 {
+  font-size: 22px;
+  text-decoration: underline;
+  margin-bottom: 10px;
+}
+
+#ingredients,
+#additives,
+#imgNutriscore,
+#picfood,
+#foodName {
+  margin-bottom: 20px;
+}
+
+#button{
+  display: block;
+  background-color: #48bc8b;
+  border-radius: 18px;
+  margin-top: 20px;
+}
+</style>

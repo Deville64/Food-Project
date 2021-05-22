@@ -32,3 +32,27 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+h1 {
+  text-decoration: underline;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#recipes {
+  background-color: #ededed;
+}
+
+#recipes li {
+  display: inline-block;
+  width: 25%;
+  text-align: center;
+  padding-top: 20px;
+  vertical-align: top;
+}
+
+#recipes li:last-child img {
+  width: 75px;
+}
+</style>

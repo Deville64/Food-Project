@@ -19,7 +19,9 @@ export default {
     searchFood() {
       const xhr = new XMLHttpRequest(); // Creating the XMLHttpRequest object
       const text = document.getElementById("search").value; //Take text from search bar
-      const url ="https://fr.openfoodfacts.org/cgi/search.pl?search_simple=1&action=process&json=true&search_terms=" + text;
+      const url =
+        "https://fr.openfoodfacts.org/cgi/search.pl?search_simple=1&action=process&json=true&search_terms=" +
+        text;
 
       //Check there is at least 3 characters to search food
       if (text.length >= 3) {
@@ -37,9 +39,15 @@ export default {
             let foodName = openFoodFactDb.products[info].product_name_fr;
             let picFood = openFoodFactDb.products[info].image_front_small_url;
             let nutriscore = openFoodFactDb.products[info].nutriscore_grade;
-            let imgNutriscore ="https://static.openfoodfacts.org/images/misc/nutriscore-" + nutriscore + ".svg";
+            let imgNutriscore =
+              "https://static.openfoodfacts.org/images/misc/nutriscore-" +
+              nutriscore +
+              ".svg";
             let nova = openFoodFactDb.products[info].nova_groups;
-            let imgNova = "https://static.openfoodfacts.org/images/misc/nova-group-" + nova + ".svg";
+            let imgNova =
+              "https://static.openfoodfacts.org/images/misc/nova-group-" +
+              nova +
+              ".svg";
             let foodID = openFoodFactDb.products[info].id;
 
             const node = document.createElement("div");
@@ -50,7 +58,7 @@ export default {
             node.addEventListener("click", function (event) {
               console.log(event.target.foodID);
               sessionStorage.setItem("foodID", event.target.foodID); // keep foodID in memory
-              location.assign('http://127.0.0.1:8000/food');
+              location.assign("http://127.0.0.1:8000/food");
             });
 
             //Food Picture
@@ -62,6 +70,11 @@ export default {
               node.appendChild(createPicFood);
             }
 
+            const div = document.createElement("div");
+            div.foodID = foodID;
+            div.className = "divDropdown";
+            node.appendChild(div);
+
             //Food Name
             if (foodName != undefined) {
               const spanFoodName = document.createElement("span");
@@ -69,7 +82,7 @@ export default {
               spanFoodName.className = "foodName";
               spanFoodName.foodID = foodID;
               spanFoodName.appendChild(foodNameNode);
-              node.appendChild(spanFoodName);
+              div.appendChild(spanFoodName);
             }
 
             //Nutriscore Image
@@ -78,7 +91,7 @@ export default {
               createImgNutriscore.setAttribute("src", imgNutriscore);
               createImgNutriscore.className = "nutriscore";
               createImgNutriscore.foodID = foodID;
-              node.appendChild(createImgNutriscore);
+              div.appendChild(createImgNutriscore);
             }
 
             //Nova Image
@@ -87,7 +100,7 @@ export default {
               createImgNova.setAttribute("src", imgNova);
               createImgNova.className = "nova";
               createImgNova.foodID = foodID;
-              node.appendChild(createImgNova);
+              div.appendChild(createImgNova);
             }
             listElem.appendChild(node);
           }
@@ -116,7 +129,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #search {
   margin-bottom: 15px;
   width: 100%;
@@ -155,11 +168,14 @@ export default {
   width: 25%;
 }
 
-#dropDown .resultFoodSearch .foodName {
+#dropDown .resultFoodSearch .divDropdown{
   display: inline-block;
-  width: 75%;
   vertical-align: top;
-  text-align: center;
+  width: 75%;
+}
+
+#dropDown .resultFoodSearch .foodName {
+  display: block;
 }
 
 #dropDown .resultFoodSearch .nutriscore {
