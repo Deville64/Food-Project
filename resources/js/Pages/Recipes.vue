@@ -42,6 +42,7 @@ h1 {
 
 #recipes {
   background-color: #ededed;
+  margin-bottom: 20px;
 }
 
 #recipes li {
@@ -50,6 +51,14 @@ h1 {
   text-align: center;
   padding-top: 20px;
   vertical-align: top;
+
+  @media (max-width: 1526px) {
+    width: 33%;
+  }
+
+  @media (max-width: 871px) {
+    width: 100%;
+  }
 }
 
 #recipes li:last-child img {

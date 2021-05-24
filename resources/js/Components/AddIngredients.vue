@@ -1,5 +1,43 @@
 <template>
   <ul>
+    <li
+      v-for="(item, index) in ingredientNumber"
+      :key="index"
+      :id="'li' + index"
+    >
+        <input
+          type="text"
+          :id="'ingredient' + index"
+          @keyup="showHint(index)"
+          className="ingredient"
+          placeholder="Selectionner un ingrédient"
+          autocomplete="off"
+        />
+
+        <ul
+          class="dropdownToCreate"
+          :id="'dropdown' + index"
+          style="display: none"
+        >
+          <li
+            v-for="ingredient in dataIngredients"
+            :key="ingredient.name"
+            @click="selectHint(index, ingredient.id)"
+            :id="'list' + ingredient.id"
+          >
+            {{ ingredient.name }}
+          </li>
+        </ul>
+        <input :id="'ingredientId' + index" type="text" style="display: none" />
+        <input
+          type="text"
+          :id="'createdQuantity' + index"
+          className="quantity"
+          placeholder="Choisir une quantité"
+          autocomplete="off"
+        />
+        <input type="button" value="X" @click="deleteIngredient(index)" />
+    </li>
     <li>
       <img
         src="/img/general/addMore.png"
@@ -8,41 +46,6 @@
         @click="createIngredient()"
       />
       <p>Ajouter un ingrédient</p>
-    </li>
-
-    <li v-for="(item, index) in ingredientNumber" :key="index" :id="'li' + index">
-      <input
-        type="text"
-        :id="'ingredient' + index"
-        @keyup="showHint(index)"
-        className="ingredient"
-        placeholder="Selectionner un ingrédient"
-        autocomplete="off"
-      />
-
-      <ul
-        class="dropdownToCreate"
-        :id="'dropdown' + index"
-        style="display: none"
-      >
-        <li
-          v-for="ingredient in dataIngredients"
-          :key="ingredient.name"
-          @click="selectHint(index, ingredient.id)"
-          :id="'list' + ingredient.id"
-        >
-          {{ ingredient.name }}
-        </li>
-      </ul>
-      <input :id="'ingredientId' + index" type="text" style="display: none" />
-      <input
-        type="text"
-        :id="'createdQuantity' + index"
-        className="quantity"
-        placeholder="Choisir une quantité"
-        autocomplete="off"
-      />
-      <input type="button" value="X" @click="deleteIngredient(index)" />
     </li>
   </ul>
 </template>
@@ -115,8 +118,8 @@ export default {
           let index = 0;
           for (let ingredient of ingredients) {
             //Check if data input with lower case and no accent match
-            //with ingredients from DB with lower case and no accent  
-            //& display max 3 ingredients & not display ingredient that 
+            //with ingredients from DB with lower case and no accent
+            //& display max 3 ingredients & not display ingredient that
             //is already selected previously
             if (
               text
@@ -148,3 +151,24 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#moreIngredients {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75px;
+  margin-top: 10px;
+}
+li {
+  display: inline-block;
+  vertical-align: middle;
+  width: 33%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+li:last-child {
+  color: brown;
+}
+</style>

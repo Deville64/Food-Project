@@ -75,7 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 ul {
-  background-color: #ededed;
+  background-color: #3fac7e;
   width: 150px;
   margin-top: 10px;
   box-shadow: 10px 10px 5px gray;
@@ -92,8 +92,8 @@ li {
 }
 
 li:hover{
-  color: white;
-  background-color: #48bc8b;
+  color: #3fac7e;
+  background-color: white;
 }
 
 span{

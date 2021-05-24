@@ -180,11 +180,12 @@ export default {
 
 #dropDown .resultFoodSearch .nutriscore {
   display: inline-block;
-  width: 100px;
+  width: 36%;
 }
 
 #dropDown .resultFoodSearch .nova {
   display: inline-block;
-  width: 45px;
+  width: 17%;
+  margin-left: 47%;
 }
 </style>
