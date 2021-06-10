@@ -4,41 +4,49 @@
       v-for="(item, index) in ingredientNumber"
       :key="index"
       :id="'li' + index"
+      class="ingredientBlock"
     >
-        <input
-          type="text"
-          :id="'ingredient' + index"
-          @keyup="showHint(index)"
-          className="ingredient"
-          placeholder="Selectionner un ingrédient"
-          autocomplete="off"
-        />
+      <input
+        type="text"
+        :id="'ingredient' + index"
+        @keyup="showHint(index)"
+        className="ingredientInput"
+        placeholder="Ingrédient"
+        autocomplete="off"
+      />
 
-        <ul
-          class="dropdownToCreate"
-          :id="'dropdown' + index"
-          style="display: none"
+      <ul
+        class="dropdownToCreate"
+        :id="'dropdown' + index"
+        style="display: none"
+      >
+        <li
+          v-for="ingredient in dataIngredients"
+          :key="ingredient.name"
+          @click="selectHint(index, ingredient.id)"
+          :id="'list' + ingredient.id"
+          class="list"
         >
-          <li
-            v-for="ingredient in dataIngredients"
-            :key="ingredient.name"
-            @click="selectHint(index, ingredient.id)"
-            :id="'list' + ingredient.id"
-          >
-            {{ ingredient.name }}
-          </li>
-        </ul>
-        <input :id="'ingredientId' + index" type="text" style="display: none" />
-        <input
-          type="text"
-          :id="'createdQuantity' + index"
-          className="quantity"
-          placeholder="Choisir une quantité"
-          autocomplete="off"
-        />
-        <input type="button" value="X" @click="deleteIngredient(index)" />
+          {{ ingredient.name }}
+        </li>
+      </ul>
+      <input :id="'ingredientId' + index" type="text" style="display: none" />
+      <input
+        type="text"
+        :id="'createdQuantity' + index"
+        className="quantity"
+        placeholder="Quantité"
+        autocomplete="off"
+        size="8"
+      />
+      <input
+        type="button"
+        class="deleteIngredient"
+        value="X"
+        @click="deleteIngredient(index)"
+      />
     </li>
-    <li>
+    <li class="ingredientBlock">
       <img
         src="/img/general/addMore.png"
         alt=""
@@ -160,15 +168,82 @@ export default {
   width: 75px;
   margin-top: 10px;
 }
-li {
+.ingredientBlock {
   display: inline-block;
   vertical-align: middle;
-  width: 33%;
-  margin-bottom: 10px;
-  text-align: center;
+  width: 27%;
+  margin-right: 6%;
+  margin-bottom: 20px;
+  // text-align: center;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 20px 0px 20px 0px;
+
+  @media (max-width: 1800px) {
+    width: 44%;
+  }
+
+  @media (max-width: 1100px) {
+    width: 100%;
+    margin-right: 0;
+  }
 }
 
-li:last-child {
-  color: brown;
+@media only screen and (max-width: 1801px) {
+  .ingredientBlock:nth-last-child(2) {
+    margin-right: 0;
+  }
+}
+
+@media only screen and (min-width: 1801px) {
+  .ingredientBlock:nth-child(3n) {
+    margin-right: 0;
+  }
+}
+
+.ingredientBlock:last-child {
+  width: 33%;
+  text-align: center;
+  box-shadow: none;
+  margin-left: 0;
+  padding: 0;
+
+  @media (max-width: 1800px) {
+    width: 50%;
+  }
+
+  @media (max-width: 1100px) {
+    width: 100%;
+  }
+}
+
+.ingredientInput {
+  margin-right: 14%;
+  margin-left: 3%;
+}
+
+.dropdownToCreate {
+  position: absolute;
+  margin-left: 0.6%;
+  width: 147px;
+  text-align: center;
+  background-color: #3fac7e;
+
+  @media (max-width: 1800px) {
+    margin-left: 1%;
+  }
+
+  @media (max-width: 1100px) {
+    margin-left: 2.2%;
+  }
+}
+
+.deleteIngredient {
+  float: right;
+  margin-right: 2%;
+}
+
+.list {
+  margin: 10px 0 10px 0;
+  cursor: pointer;
 }
 </style>

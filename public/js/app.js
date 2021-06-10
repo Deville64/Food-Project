@@ -17703,7 +17703,11 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-b3bf8828");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Ajouter un ingrédient", -1
+var _hoisted_1 = {
+  "class": "ingredientBlock"
+};
+
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Ajouter un ingrédient", -1
 /* HOISTED */
 );
 
@@ -17713,15 +17717,16 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ingredientNumber, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       key: index,
-      id: 'li' + index
+      id: 'li' + index,
+      "class": "ingredientBlock"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
       type: "text",
       id: 'ingredient' + index,
       onKeyup: function onKeyup($event) {
         return $options.showHint(index);
       },
-      className: "ingredient",
-      placeholder: "Selectionner un ingrédient",
+      className: "ingredientInput",
+      placeholder: "Ingrédient",
       autocomplete: "off"
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
@@ -17737,7 +17742,8 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
         onClick: function onClick($event) {
           return $options.selectHint(index, ingredient.id);
         },
-        id: 'list' + ingredient.id
+        id: 'list' + ingredient.id,
+        "class": "list"
       }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.name), 9
       /* TEXT, PROPS */
       , ["onClick", "id"]);
@@ -17757,12 +17763,14 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
       type: "text",
       id: 'createdQuantity' + index,
       className: "quantity",
-      placeholder: "Choisir une quantité",
-      autocomplete: "off"
+      placeholder: "Quantité",
+      autocomplete: "off",
+      size: "8"
     }, null, 8
     /* PROPS */
     , ["id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
       type: "button",
+      "class": "deleteIngredient",
       value: "X",
       onClick: function onClick($event) {
         return $options.deleteIngredient(index);
@@ -17774,14 +17782,14 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     , ["id"]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     src: "/img/general/addMore.png",
     alt: "",
     id: "moreIngredients",
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return $options.createIngredient();
     })
-  }), _hoisted_1])]);
+  }), _hoisted_2])]);
 });
 
 /***/ }),
@@ -19794,7 +19802,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#moreIngredients[data-v-b3bf8828] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75px;\n  margin-top: 10px;\n}\nli[data-v-b3bf8828] {\n  display: inline-block;\n  vertical-align: middle;\n  width: 33%;\n  margin-bottom: 10px;\n  text-align: center;\n}\nli[data-v-b3bf8828]:last-child {\n  color: brown;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "#moreIngredients[data-v-b3bf8828] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75px;\n  margin-top: 10px;\n}\n.ingredientBlock[data-v-b3bf8828] {\n  display: inline-block;\n  vertical-align: middle;\n  width: 27%;\n  margin-right: 6%;\n  margin-bottom: 20px;\n  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);\n  padding: 20px 0px 20px 0px;\n}\n@media (max-width: 1800px) {\n.ingredientBlock[data-v-b3bf8828] {\n    width: 44%;\n}\n}\n@media (max-width: 1100px) {\n.ingredientBlock[data-v-b3bf8828] {\n    width: 100%;\n    margin-right: 0;\n}\n}\n@media only screen and (max-width: 1801px) {\n.ingredientBlock[data-v-b3bf8828]:nth-last-child(2) {\n    margin-right: 0;\n}\n}\n@media only screen and (min-width: 1801px) {\n.ingredientBlock[data-v-b3bf8828]:nth-child(3n) {\n    margin-right: 0;\n}\n}\n.ingredientBlock[data-v-b3bf8828]:last-child {\n  width: 33%;\n  text-align: center;\n  box-shadow: none;\n  margin-left: 0;\n  padding: 0;\n}\n@media (max-width: 1800px) {\n.ingredientBlock[data-v-b3bf8828]:last-child {\n    width: 50%;\n}\n}\n@media (max-width: 1100px) {\n.ingredientBlock[data-v-b3bf8828]:last-child {\n    width: 100%;\n}\n}\n.ingredientInput[data-v-b3bf8828] {\n  margin-right: 14%;\n  margin-left: 3%;\n}\n.dropdownToCreate[data-v-b3bf8828] {\n  position: absolute;\n  margin-left: 0.6%;\n  width: 147px;\n  text-align: center;\n  background-color: #3fac7e;\n}\n@media (max-width: 1800px) {\n.dropdownToCreate[data-v-b3bf8828] {\n    margin-left: 1%;\n}\n}\n@media (max-width: 1100px) {\n.dropdownToCreate[data-v-b3bf8828] {\n    margin-left: 2.2%;\n}\n}\n.deleteIngredient[data-v-b3bf8828] {\n  float: right;\n  margin-right: 2%;\n}\n.list[data-v-b3bf8828] {\n  margin: 10px 0 10px 0;\n  cursor: pointer;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
