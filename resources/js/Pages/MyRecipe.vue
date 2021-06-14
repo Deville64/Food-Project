@@ -117,7 +117,6 @@ h1,
   width: 27%;
   margin-right: 6%;
   margin-bottom: 20px;
-  // text-align: center;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 20px 0px 20px 0px;
 

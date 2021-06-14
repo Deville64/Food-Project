@@ -40,8 +40,6 @@
       <textarea
         v-model="form.description"
         id="preparation"
-        cols="30"
-        rows="10"
         autocomplete="off"
         placeholder="Vous pouvez décrire ici les différentes étapes de votre recette"
       ></textarea>
