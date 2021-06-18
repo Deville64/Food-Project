@@ -139,6 +139,7 @@ li:first-child{
 textarea {
   width: 100%;
   margin-top: 10px;
+  height: 400px;
 }
 
 #button {

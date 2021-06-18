@@ -3,14 +3,14 @@
   <main class="wrapper">
     <form @submit.prevent="submit(recipe[0].id)">
       <h1>Modification de ma recette</h1>
-      <input type="text" id="recipeName" v-model="form.name" />
+      <input type="text" id="recipeName" v-model="form.name" autocomplete="off"/>
       <ul id="time">
-        <li><input type="text" v-model="form.preparation_time" /></li>
-        <li><input type="text" v-model="form.cooking_time" /></li>
+        <li><input type="text" v-model="form.preparation_time" autocomplete="off"/></li>
+        <li><input type="text" v-model="form.cooking_time" autocomplete="off"/></li>
       </ul>
 
       <h2>Ingrédients:</h2>
-      <ul>
+      <ul id="apiDropdownToUpdate">
         <li
           v-for="(api, index) in ingredientsApi"
           :key="index"
@@ -26,15 +26,16 @@
           <span class="apiName">
             {{ api.name }}
           </span>
-          <span style="display: none" :id="'ingredientId' + index">{{
+          <span style="display: none" :id="'apiIngredientId' + index">{{
             api.id
           }}</span>
           <input
             type="text"
-            :id="'ApiQuantity' + index"
+            :id="'apiQuantity' + index"
             v-model="api.quantity"
             size="8"
             class="apiQuantity"
+            autocomplete="off"
           />
           <img
             :src="
@@ -44,7 +45,7 @@
             "
             class="ingredientNutriscore"
           />
-          <input type="button" value="X"  @click="deleteIngredient(index)" />
+          <input type="button" value="X" @click="deleteIngredient(index)" />
         </li>
       </ul>
       <ul id="dropdownToUpdate">
@@ -65,8 +66,14 @@
             :id="'quantity' + index"
             v-model="ingredient.quantity"
             size="8"
+            autocomplete="off"
           />
-          <input type="button" value="X" id="deleteIngredient" @click="deleteIngredient(index)" />
+          <input
+            type="button"
+            value="X"
+            id="deleteIngredient"
+            @click="deleteIngredient(index)"
+          />
         </li>
       </ul>
       <AddIngredients />
@@ -120,6 +127,24 @@ export default {
       myLi.remove();
     },
     submit() {
+      //Send to the form updated data from api list
+      const apiDropdownToUpdateLength = document.getElementById(
+        "apiDropdownToUpdate"
+      ).childElementCount;
+
+      for (let index = 0; index <= apiDropdownToUpdateLength - 1; index++) {
+        let getApiQuantity = document.getElementById(
+          "apiQuantity" + index
+        ).value;
+        let getApiIngredientId = document.getElementById(
+          "apiIngredientId" + index
+        ).innerText;
+        this.form.ingredientsToUpdate.push({
+          ingredients_id: getApiIngredientId,
+          quantity: getApiQuantity,
+        });
+      }
+      
       //Send to the form updated data
       const dropdownToUpdateLength =
         document.getElementById("dropdownToUpdate").childElementCount;
@@ -262,13 +287,14 @@ h1,
   padding: 0;
 }
 
-#deleteIngredient{
+#deleteIngredient {
   float: right;
   margin-right: 2%;
 }
 textarea {
   width: 100%;
   margin-top: 10px;
+  height: 400px;
 }
 
 #button {

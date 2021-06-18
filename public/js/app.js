@@ -16512,21 +16512,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Components_TheHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/TheHeader */ "./resources/js/Components/TheHeader.vue");
-/* harmony import */ var _Components_TheFooter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/TheFooter */ "./resources/js/Components/TheFooter.vue");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    TheHeader: _Components_TheHeader__WEBPACK_IMPORTED_MODULE_0__.default,
-    TheFooter: _Components_TheFooter__WEBPACK_IMPORTED_MODULE_1__.default
-  },
   data: function data() {
     return {
       ingredientNumber: [],
@@ -17275,12 +17267,24 @@ __webpack_require__.r(__webpack_exports__);
       myLi.remove();
     },
     submit: function submit() {
-      //Send to the form updated data
+      //Send to the form updated data from api list
+      var apiDropdownToUpdateLength = document.getElementById("apiDropdownToUpdate").childElementCount;
+
+      for (var index = 0; index <= apiDropdownToUpdateLength - 1; index++) {
+        var getApiQuantity = document.getElementById("apiQuantity" + index).value;
+        var getApiIngredientId = document.getElementById("apiIngredientId" + index).innerText;
+        this.form.ingredientsToUpdate.push({
+          ingredients_id: getApiIngredientId,
+          quantity: getApiQuantity
+        });
+      } //Send to the form updated data
+
+
       var dropdownToUpdateLength = document.getElementById("dropdownToUpdate").childElementCount;
 
-      for (var index = 0; index <= dropdownToUpdateLength - 1; index++) {
-        var getQuantity = document.getElementById("quantity" + index).value;
-        var getIngredientId = document.getElementById("ingredientId" + index).innerText;
+      for (var _index = 0; _index <= dropdownToUpdateLength - 1; _index++) {
+        var getQuantity = document.getElementById("quantity" + _index).value;
+        var getIngredientId = document.getElementById("ingredientId" + _index).innerText;
         this.form.ingredientsToUpdate.push({
           ingredients_id: getIngredientId,
           quantity: getQuantity
@@ -17290,9 +17294,9 @@ __webpack_require__.r(__webpack_exports__);
 
       var dropdownToCreateLength = document.getElementsByClassName("dropdownToCreate").length;
 
-      for (var _index = 0; _index <= dropdownToCreateLength - 1; _index++) {
-        var _getQuantity = document.getElementById("createdQuantity" + _index).value;
-        var _getIngredientId = document.getElementById("ingredientId" + _index).value;
+      for (var _index2 = 0; _index2 <= dropdownToCreateLength - 1; _index2++) {
+        var _getQuantity = document.getElementById("createdQuantity" + _index2).value;
+        var _getIngredientId = document.getElementById("ingredientId" + _index2).value;
         this.form.ingredientsToAdd.push({
           ingredients_id: _getIngredientId,
           quantity: _getQuantity
@@ -19076,16 +19080,19 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_5 = {
-  "class": "apiName"
+  id: "apiDropdownToUpdate"
 };
 var _hoisted_6 = {
-  id: "dropdownToUpdate"
+  "class": "apiName"
 };
 var _hoisted_7 = {
+  id: "dropdownToUpdate"
+};
+var _hoisted_8 = {
   "class": "ingredientName"
 };
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   id: "button"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
   type: "submit",
@@ -19112,24 +19119,27 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     id: "recipeName",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.name = $event;
-    })
+    }),
+    autocomplete: "off"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.form.preparation_time = $event;
-    })
+    }),
+    autocomplete: "off"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.preparation_time]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.form.cooking_time = $event;
-    })
+    }),
+    autocomplete: "off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.cooking_time]])])]), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredientsApi, function (api, index) {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.cooking_time]])])]), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_5, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredientsApi, function (api, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       key: index,
       id: 'updateIngredient' + index,
@@ -19139,23 +19149,24 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
       "class": "ingredientPicture"
     }, null, 8
     /* PROPS */
-    , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(api.name), 1
+    , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(api.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
       style: {
         "display": "none"
       },
-      id: 'ingredientId' + index
+      id: 'apiIngredientId' + index
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(api.id), 9
     /* TEXT, PROPS */
     , ["id"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
       type: "text",
-      id: 'ApiQuantity' + index,
+      id: 'apiQuantity' + index,
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return api.quantity = $event;
       },
       size: "8",
-      "class": "apiQuantity"
+      "class": "apiQuantity",
+      autocomplete: "off"
     }, null, 8
     /* PROPS */
     , ["id", "onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, api.quantity]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
@@ -19176,12 +19187,12 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     , ["id"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredients, function (ingredient, index) {
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredients, function (ingredient, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       key: index,
       id: 'updateIngredient' + index,
       "class": "ingredientBlock"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
       style: {
@@ -19196,7 +19207,8 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return ingredient.quantity = $event;
       },
-      size: "8"
+      size: "8",
+      autocomplete: "off"
     }, null, 8
     /* PROPS */
     , ["id", "onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, ingredient.quantity]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
@@ -19219,7 +19231,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), _hoisted_8], 32
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]]), _hoisted_9], 32
   /* HYDRATE_EVENTS */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TheFooter)], 64
   /* STABLE_FRAGMENT */
@@ -20096,7 +20108,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "h1[data-v-2772dd1d],\nh2[data-v-2772dd1d] {\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 28px;\n  font-weight: 600;\n}\n#recipeName[data-v-2772dd1d] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\nh1[data-v-2772dd1d],\n#time[data-v-2772dd1d] {\n  text-align: center;\n}\n#time li[data-v-2772dd1d] {\n  display: inline-block;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}\n#time li[data-v-2772dd1d]:first-child {\n  margin-right: 6%;\n}\n.ingredientPicture[data-v-2772dd1d] {\n  margin-left: 3%;\n  margin-right: 3%;\n  height: 52px;\n  vertical-align: middle;\n}\n.apiQuantity[data-v-2772dd1d] {\n  margin-left: 10%;\n  margin-right: 5%;\n}\n.apiQuantity[data-v-2772dd1d],\n.apiName[data-v-2772dd1d] {\n  margin-bottom: 1%;\n}\n.ingredientNutriscore[data-v-2772dd1d] {\n  margin-right: 3%;\n  width: 90px;\n  vertical-align: middle;\n}\n.ingredientName[data-v-2772dd1d] {\n  margin-left: 14%;\n  margin-right: 30%;\n}\n.ingredientQuantity[data-v-2772dd1d] {\n  float: right;\n  margin-right: 14%;\n}\n.ingredientBlock[data-v-2772dd1d],\n.ApiIngredientBlock[data-v-2772dd1d] {\n  display: inline-block;\n  vertical-align: middle;\n  width: 27%;\n  margin-right: 6%;\n  margin-bottom: 20px;\n  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);\n  padding: 20px 0px 20px 0px;\n}\n@media (max-width: 1800px) {\n.ingredientBlock[data-v-2772dd1d],\n.ApiIngredientBlock[data-v-2772dd1d] {\n    width: 44%;\n}\n}\n@media (max-width: 1100px) {\n.ingredientBlock[data-v-2772dd1d],\n.ApiIngredientBlock[data-v-2772dd1d] {\n    width: 100%;\n    margin-right: 0;\n}\n}\n@media only screen and (max-width: 1801px) {\n.ingredientBlock[data-v-2772dd1d]:nth-last-child(2) {\n    margin-right: 0;\n}\n.ApiIngredientBlock[data-v-2772dd1d]:nth-last-child(2) {\n    margin-right: 0;\n}\n}\n@media only screen and (min-width: 1801px) {\n.ingredientBlock[data-v-2772dd1d]:nth-child(3n) {\n    margin-right: 0;\n}\n.ApiIngredientBlock[data-v-2772dd1d]:nth-child(3n) {\n    margin-right: 0;\n}\n}\n.ApiIngredientBlock[data-v-2772dd1d] {\n  padding: 0;\n}\n#deleteIngredient[data-v-2772dd1d] {\n  float: right;\n  margin-right: 2%;\n}\ntextarea[data-v-2772dd1d] {\n  width: 100%;\n  margin-top: 10px;\n}\n#button[data-v-2772dd1d] {\n  text-align: right;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "h1[data-v-2772dd1d],\nh2[data-v-2772dd1d] {\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 28px;\n  font-weight: 600;\n}\n#recipeName[data-v-2772dd1d] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\nh1[data-v-2772dd1d],\n#time[data-v-2772dd1d] {\n  text-align: center;\n}\n#time li[data-v-2772dd1d] {\n  display: inline-block;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}\n#time li[data-v-2772dd1d]:first-child {\n  margin-right: 6%;\n}\n.ingredientPicture[data-v-2772dd1d] {\n  margin-left: 3%;\n  margin-right: 3%;\n  height: 52px;\n  vertical-align: middle;\n}\n.apiQuantity[data-v-2772dd1d] {\n  margin-left: 10%;\n  margin-right: 5%;\n}\n.apiQuantity[data-v-2772dd1d],\n.apiName[data-v-2772dd1d] {\n  margin-bottom: 1%;\n}\n.ingredientNutriscore[data-v-2772dd1d] {\n  margin-right: 3%;\n  width: 90px;\n  vertical-align: middle;\n}\n.ingredientName[data-v-2772dd1d] {\n  margin-left: 14%;\n  margin-right: 30%;\n}\n.ingredientQuantity[data-v-2772dd1d] {\n  float: right;\n  margin-right: 14%;\n}\n.ingredientBlock[data-v-2772dd1d],\n.ApiIngredientBlock[data-v-2772dd1d] {\n  display: inline-block;\n  vertical-align: middle;\n  width: 27%;\n  margin-right: 6%;\n  margin-bottom: 20px;\n  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);\n  padding: 20px 0px 20px 0px;\n}\n@media (max-width: 1800px) {\n.ingredientBlock[data-v-2772dd1d],\n.ApiIngredientBlock[data-v-2772dd1d] {\n    width: 44%;\n}\n}\n@media (max-width: 1100px) {\n.ingredientBlock[data-v-2772dd1d],\n.ApiIngredientBlock[data-v-2772dd1d] {\n    width: 100%;\n    margin-right: 0;\n}\n}\n@media only screen and (max-width: 1801px) {\n.ingredientBlock[data-v-2772dd1d]:nth-last-child(2) {\n    margin-right: 0;\n}\n.ApiIngredientBlock[data-v-2772dd1d]:nth-last-child(2) {\n    margin-right: 0;\n}\n}\n@media only screen and (min-width: 1801px) {\n.ingredientBlock[data-v-2772dd1d]:nth-child(3n) {\n    margin-right: 0;\n}\n.ApiIngredientBlock[data-v-2772dd1d]:nth-child(3n) {\n    margin-right: 0;\n}\n}\n.ApiIngredientBlock[data-v-2772dd1d] {\n  padding: 0;\n}\n#deleteIngredient[data-v-2772dd1d] {\n  float: right;\n  margin-right: 2%;\n}\ntextarea[data-v-2772dd1d] {\n  width: 100%;\n  margin-top: 10px;\n  height: 400px;\n}\n#button[data-v-2772dd1d] {\n  text-align: right;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -20168,7 +20180,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "h1[data-v-6d105cdb],\nh2[data-v-6d105cdb] {\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 28px;\n  font-weight: 600;\n}\n#recipeName[data-v-6d105cdb], img[data-v-6d105cdb] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\nh1[data-v-6d105cdb],\n#time[data-v-6d105cdb], p[data-v-6d105cdb] {\n  text-align: center;\n}\nimg[data-v-6d105cdb] {\n  text-align: center;\n  width: 75px;\n  margin-top: 20px;\n  margin-bottom: 10px;\n}\nli[data-v-6d105cdb] {\n  display: inline-block;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}\nli[data-v-6d105cdb]:first-child {\n  margin-right: 6%;\n}\ntextarea[data-v-6d105cdb] {\n  width: 100%;\n  margin-top: 10px;\n}\n#button[data-v-6d105cdb] {\n  text-align: right;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "h1[data-v-6d105cdb],\nh2[data-v-6d105cdb] {\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 28px;\n  font-weight: 600;\n}\n#recipeName[data-v-6d105cdb], img[data-v-6d105cdb] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\nh1[data-v-6d105cdb],\n#time[data-v-6d105cdb], p[data-v-6d105cdb] {\n  text-align: center;\n}\nimg[data-v-6d105cdb] {\n  text-align: center;\n  width: 75px;\n  margin-top: 20px;\n  margin-bottom: 10px;\n}\nli[data-v-6d105cdb] {\n  display: inline-block;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}\nli[data-v-6d105cdb]:first-child {\n  margin-right: 6%;\n}\ntextarea[data-v-6d105cdb] {\n  width: 100%;\n  margin-top: 10px;\n  height: 400px;\n}\n#button[data-v-6d105cdb] {\n  text-align: right;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
